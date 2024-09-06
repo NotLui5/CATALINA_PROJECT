@@ -1,0 +1,14 @@
+---
+title: "CATALINA PROJECT"
+knit: (function(inputFile, encoding) { rmarkdown::render(inputFile, encoding = encoding, output_file = paste0(dirname(inputFile),'/README.md')) })
+output: github_document
+---
+<i> This project is made by [Luis A. Figueroa](https://twitter.com/LuisFig1706), [Andrea Solis Pazmiño](https://x.com/paosolpaz18), [et. al](https://x.com/CaTaLiNA_Ecu)</i>
+
+This site show all information or documents used, from the protocol to the final publication, will be available here. If further information is needed, please do not hesitate to contact us. 
+
+```{r packages, include=FALSE}
+library(rmarkdown)
+
+knitr::opts_chunk$set(fig.path = "Figures/", dev='svg') # dev = 'png'
+```
