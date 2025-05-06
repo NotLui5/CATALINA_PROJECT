@@ -14,20 +14,22 @@ knitr::opts_chunk$set(fig.path = "Figures/", dev='svg') # dev = 'png'
 ```
 
 <details>
-<summary><b>Figures </b></summary>
+<summary><b>Figures  </b></summary>
 <br>
-This section shows [Figures](../Figure 1.docx).
+This section shows [Figures](./Figure 1.docx).
 
-![Figure 1 Schedule of data collection from baseline to 54 months follow-up.](../figure1.png)
+
+![Figure 1 Schedule of data collection from baseline to 54 months follow-up.](./figure1.png)
 
 </details>
+<br/>
 
 <details>
 <summary><b>Tables </b></summary>
 <br>
-This section shows [Tables](../TABLES.docx').
+This section shows [Tables](./TABLES.docx').
 
-Table 1. Sites of the study
+**Table 1. Sites of the study**
 
 | ***COUNTRY*** |	**CITY** |	**HOSPITAL**	| **Number of patients per year** | 
 |:---:|:---:|:---:|:---:|
@@ -44,7 +46,7 @@ Table 1. Sites of the study
 
 
 
-Table 2. Description of Questionnaire 1
+**Table 2. Description of Questionnaire 1**
 
 | Questionnaire Items |	Content |
 |:---|:---|
@@ -57,7 +59,7 @@ Table 2. Description of Questionnaire 1
 
 
 
-Table 3.  Description of Questionnaire 2
+**Table 3.  Description of Questionnaire 2**
 
 |Sections of the questionnaire |	Questionnaire items |	Content |
 |:---|:---|:---|
@@ -70,7 +72,7 @@ Table 3.  Description of Questionnaire 2
 
 
 
-Table 4.  Description of Questionnaire 3 
+**Table 4.  Description of Questionnaire 3 **
 
 | Sections of the Questionnaire |	Content |
 |:---|:---|
@@ -81,7 +83,7 @@ Table 4.  Description of Questionnaire 3
 
 
 
-Table 5. Response to Initial treatment Definitions
+**Table 5. Response to Initial treatment Definitions**
 
 | | Patients with TT and I-131 | Patients with TT without I-131 |
 |---|---|---|
@@ -103,15 +105,14 @@ Table 5. Response to Initial treatment Definitions
 | **Structural incomplete response** | Abnormal findings on imaging | Abnormal findings on imaging |
 
 </details>
-
-
+<br/>
 
 <details>
-<summary><b>Supplementary material</b></summary>
+<summary><b>Supplementary material  </b></summary>
 <br>
 This section shows [Supplementary material](./Supplementary material.docx).
 
-Table 1s. Comparison among ATA, ETA and CIA guideline.
+**Table 1s. Comparison among ATA, ETA and CIA guideline.**
 
 | | ATA 2015	| ETA 2018 |	Consenso Intersocietario Argentino 2022 |
 |---|---|---|---|
@@ -122,3 +123,4 @@ Table 1s. Comparison among ATA, ETA and CIA guideline.
 | Clinical and histopathological features | 	No |	No |	No |
 
 </details>
+<br/>

@@ -15,24 +15,27 @@ needed, please do not hesitate to contact us.
 <b>Figures </b>
 </summary>
 
-<br> This section shows [Figures](../Figure%201.docx).
+<br> This section shows [Figures](./Figure%201.docx).
 
 <figure>
-<img src="../figure1.png"
+<img src="./figure1.png"
 alt="Figure 1 Schedule of data collection from baseline to 54 months follow-up." />
 <figcaption aria-hidden="true">Figure 1 Schedule of data collection from
 baseline to 54 months follow-up.</figcaption>
 </figure>
 
 </details>
+
+<br/>
+
 <details>
 <summary>
 <b>Tables </b>
 </summary>
 
-<br> This section shows [Tables](../TABLES.docx').
+<br> This section shows [Tables](./TABLES.docx').
 
-Table 1. Sites of the study
+**Table 1. Sites of the study**
 
 | ***COUNTRY*** | **CITY** | **HOSPITAL** | **Number of patients per year** |
 |:--:|:--:|:--:|:--:|
@@ -47,7 +50,7 @@ Table 1. Sites of the study
 | *Mexico* | Monterrey | Hospital Universitario “Dr. José E. González” Universidad Autónoma de Nuevo León | 100 |
 |  | Mexico DF | Clinica de Especialidades | 150 |
 
-Table 2. Description of Questionnaire 1
+**Table 2. Description of Questionnaire 1**
 
 | Questionnaire Items | Content |
 |:---|:---|
@@ -58,7 +61,7 @@ Table 2. Description of Questionnaire 1
 | Thyroid gland functionality and description | Describe the last thyroid function recorded in the patient’s medical care. |
 | Description of thyroid nodule fine-needle aspiration (F.N.A.) | Describe cytological results based on the Bethesda System |
 
-Table 3. Description of Questionnaire 2
+**Table 3. Description of Questionnaire 2**
 
 | Sections of the questionnaire | Questionnaire items | Content |
 |:---|:---|:---|
@@ -69,7 +72,7 @@ Table 3. Description of Questionnaire 2
 | Risk of reference calculators | ATA2, E.T.A. 3, and the C.I.L.A. 4 | Describe the measures and detailed characteristics |
 | Treatment complications | Hypercalcemia \< 6 months and \> six months after the procedure, recurrent laryngeal nerve injury, and other complications with active surveillance. | \- |
 
-Table 4. Description of Questionnaire 3
+**Table 4. Description of Questionnaire 3 **
 
 | Sections of the Questionnaire | Content |
 |:---|:---|
@@ -78,7 +81,7 @@ Table 4. Description of Questionnaire 3
 | Primary outcome (recurrence) | Describe the measures and detailed characteristics |
 | Secondary outcomes (response to the treatment, mortality, and quality of life \[Q.o.L.\]). | Describe the measures and detailed characteristics |
 
-Table 5. Response to Initial treatment Definitions
+**Table 5. Response to Initial treatment Definitions**
 
 <table>
 <colgroup>
@@ -137,15 +140,18 @@ thyroglobulin ≥ 2 to &lt; 10 ng/ml<br />
 </table>
 
 </details>
+
+<br/>
+
 <details>
 <summary>
-<b>Supplementary material</b>
+<b>Supplementary material </b>
 </summary>
 
 <br> This section shows [Supplementary
 material](./Supplementary%20material.docx).
 
-Table 1s. Comparison among ATA, ETA and CIA guideline.
+**Table 1s. Comparison among ATA, ETA and CIA guideline.**
 
 |  | ATA 2015 | ETA 2018 | Consenso Intersocietario Argentino 2022 |
 |----|----|----|----|
@@ -156,3 +162,5 @@ Table 1s. Comparison among ATA, ETA and CIA guideline.
 | Clinical and histopathological features | No | No | No |
 
 </details>
+
+<br/>
