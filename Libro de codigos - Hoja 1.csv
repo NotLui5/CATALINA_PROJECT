@@ -1,0 +1,770 @@
+codigo_id,CODIGO ID,
+consetinform,CONSENT_INFORM,"1. Si 
+2. No "
+datocli20,INTERVIEW_DATE,
+cedula,DNI,
+datodem02,BIRTHDATE,
+datodem03,AGE,
+datodem04,AGE_AT_DIAGNOSIS,
+datodem06,CITY_BIRTH,
+datodem07,CITY_RESIDENCE,
+datodem08,ETHNICITY,"1 Mestizo
+2 Asiático
+3 Negro
+4 Caucásico
+5 Indígena
+6 Otro: "
+datodem08a,ETNNIA_TEXT,
+datodem09,GENDER,"1. Mujer 
+2.Hombre "
+[datodem10],EDUCATION,"1 No
+2 Primaria incompleta
+3 Primaria completa
+4 Secundaria completa
+5 Secundaria incompleta
+6 Universidad
+7 Postgrado
+8 Otro"
+[datodem11],OCUPATION,
+[datoant01],WEIGHT,
+[datoant02],HIGHT,
+[datoant03],BMI,
+[datocli01],FAMILY_HISTORY_THYROIDCANCER,"1. Si 
+2. No "
+[datocli02],CONSANGUINITY ,
+[datocli021],CONSANGUINITY_FIRSTGRADE,
+[datocli022],CONSANGUINITY_SECONDGRADE,
+[datocli03],HEADANDNECK_RADIATION_EXPOSURE,"1.Si 
+2. No "
+[datocli3a],JOB_RADIATION_EXPOSURE,"1. Si, especifique 
+2. No "
+datocli3aa,DESCRIBE_RADIATION,
+[datocli04],SMOKE,"1 Nunca
+2 Actualmente
+3 Ex Fumador"
+[datocli05],#TABACCOS,
+[datocli06],TIME_SMOKING,
+[datocli07],TIME_STOP_SMOKING,
+[datocli07a],SMOKE_D/M/Y,"1 Días
+2 Meses
+3 Años"
+[datocli08],COMORBIDITIES_YES_NO,"1. Si 
+2. No "
+[datocli08a],TYPE_COMORBIDITIES,
+[datocli08a1],DESCRIBE_CARDIAC_COMORBIDITIES,
+[datocli08a2],DESCRIBE_RESPIRATORY_COMORBIDITIES,
+[datocli08a3],DESCRIBE_HEPATIC_COMORBIDITIES,
+[datocli08a4],DESCRIBE_RENAL_COMORBIDITIES,
+[datocli08a5],DESCRIBE_BLOOD_COMORBIDITIES,
+[datocli08a7],DESCRIBE_COVID_COMORBIDITIES,
+[datocli08a8],DESCRIBE_OTHER_COMORBIDITIES,
+[datocli0811],METHOD_DETECTION,"1 Tamizaje
+2 Nódulo sintomático
+3 Pruebas no relacionadas
+4 Imagen incidental
+5 Histología incidental"
+[datocli09],PREOP_THYROID_FUNCTION,"1 Hipotiroideo
+2 Eutiroideo
+3 Hipertiroideo"
+[datocli09a],THYROID_FUNCTION_YESNO,"1. Si 
+2. No "
+[datocli10],PREOP_TSH,
+[datocli11],PREOP_TSH_DATE,
+[datocli12],TiRADS,
+[datocli12a],TiRADS_COMPOSITION,"1 Quística o casi completamente quística
+2 Espongiforme
+3 Mixto quístico y solido
+4 Solido o casi completamente solido
+0 No disponible"
+[datocli12b],TiRADS_ECHOGENICITY,"1 Anecoico
+2 Hiperecoico o isoecoico
+3 Hipoecoico
+4 Muy hipoecoico
+0 No disponible"
+[datocli12c],TiRADS_SHAPE,"1 Más ancho que alto
+2 Más alto que ancho
+0 No disponible"
+[datocli12d],TiRADS_MARGIN,"1. Lisos 
+2. Bien definidos 
+3.lobulado o irregular 
+4. Extensión estratiroidea 
+0. No disponible "
+[datocli12e],TiRADS_FOCOS,"1 Ninguno o grandes artefactos de cola de cometa
+2 Microcalcificaciones
+3 Calcificaciones periféricas
+4 Focos ecogénico punteados
+0 No disponible"
+[datocli12h],TiRADS_DESCRIBE,
+[datocli12f],TiRADS_SUMA_CALC,
+[datocli12g],TiRADS_TOTAL,
+[datocli13],TUMORSIZE,
+[datocli13a],WIDE_TUMORSIZE,
+[datocli13b],HIGH_TUMORSIZE,
+[datocli13c],TICKNESS_TUMORSIZE,
+[datocli14],LOCATION_TUMORSIZE,
+[datocli14a],OTHER_TUMOR_LOCATION,
+[datocli141],RIGHT_LOBE,
+[datocli142],LEFT_LOBE,
+[datocli143],ISTHMUS,
+[datocli141a],RIGHT_LOBE_LOCATION,"1 datocli141a___1 Polo superior
+2 datocli141a___2 Medio
+3 datocli141a___3 Polo inferior"
+[datocli141b],LEFT_LOBE_LOCATION,"1 datocli141b___1 Polo superior
+2 datocli141b___2 Medio
+3 datocli141b___3 Polo inferior"
+[datocli141c],ISTHMUS_LOCATION,"1 datocli141c___1 Polo superior
+2 datocli141c___2 Medio
+3 datocli141c___3 Polo inferior"
+[datocli16],PAAF_YESNO,"1. Si 
+2. No "
+[datocli16a],WHO_PERFORM_PAAF,"1. Imagenologo 
+2. Endocrinologo
+3. Cirujano
+4. Otro (especifique)
+5. Desconocido "
+[datocli16a1],OTHER_WHO_PERFORM_PAAF,
+[datocli16b],WHERE_PERFORM_PAAF,"1 Dentro de este hospital
+2 Fuera de este hospital"
+[datocli17],DATE_PAAF,
+[datocli48],CORE_BIOPSY_YESNO,"1. Si 
+2.no "
+[datocli49],DATE_CORE_BIOPSY,
+[datocli18],BETHESDA,"1 I
+2 II
+3 III
+4 IV
+5 V
+6 VI"
+[datocli19],DATE_BETHESDA,
+[datocli45],OTHER_NODULE_YESNO,"1. Si 
+2. No "
+[datocli13_a],TUMORSIZE,
+[datocli13a_a],WIDE_TUMORSIZE,
+[datocli13b_a],HIGH_TUMORSIZE,
+[datocli13c_a],TICKNESS_TUMORSIZE,
+[datocli14_a],LOCATION_TUMORSIZE,
+[datocli14a_a],OTHER_TUMOR_LOCATION,
+[datocli141_a],RIGHT_LOBE,
+[datocli142a],LEFT_LOBE,
+[datocli143a],ISTHMUS,
+[datocli141a_a],RIGHT_LOBE_LOCATION,"1 datocli141a_a___1 Polo superior
+2 datocli141a_a___2 Medio
+3 datocli141a_a___3 Polo inferior"
+[datocli141b_a],LEFT_LOBE_LOCATION,"1 datocli141b_a___1 Polo superior
+2 datocli141b_a___2 Medio
+3 datocli141b_a___3 Polo inferior"
+[datocli141c_a],ISTHMUS_LOCATION,"1 datocli141c_a___1 Polo superior
+2 datocli141c_a___2 Medio
+3 datocli141c_a___3 Polo inferior"
+[datocli16_a],PAAF_YESNO,"1. Si 
+2. no "
+[datocli16a_a],WHO_PERFORM_PAAF,"1. Imagenologo 
+2. Endocrinologo
+3. Cirujano
+4. Otro (especifique)
+5. Desconocido "
+[datocli16a1a],OTHER_WHO_PERFORM_PAAF,
+[datocli16b_a],WHERE_PERFORM_PAAF,"1 Dentro de este hospital
+2 Fuera de este hospital"
+[datocli17a],DATE_PAAF,
+[datocli18a],BETHESDA,"1 I
+2 II
+3 III
+4 IV
+5 V
+6 VI"
+[datocli19a],DATE_BETHESDA,
+[datocli46],OTHER_NODULE_YESNO,"1. Si 
+2. no "
+[datocli13_b],TUMORSIZE,
+[datocli13a_b],WIDE_TUMORSIZE,
+[datocli13b_b],HIGH_TUMORSIZE,
+[datocli13c_b],TICKNESS_TUMORSIZE,
+[datocli14_b],LOCATION_TUMORSIZE,
+[datocli14a_b],OTHER_TUMOR_LOCATION,
+[datocli141_b],RIGHT_LOBE,
+[datocli142b],LEFT_LOBE,
+[datocli143b],ISTHMUS,
+[datocli141a_b],RIGHT_LOBE_LOCATION,
+[datocli141b_b],LEFT_LOBE_LOCATION,
+[datocli141c_b],ISTHMUS_LOCATION,
+[datocli16_b],PAAF_YESNO,
+[datocli16a_b],WHO_PERFORM_PAAF,
+[datocli16a1b],OTHER_WHO_PERFORM_PAAF,
+[datocli16b_b],WHERE_PERFORM_PAAF,
+[datocli17b],DATE_PAAF,
+[datocli18b],BETHESDA,
+[datocli19b],DATE_BETHESDA,
+[datocli47],OTHER_NODULE_YESNO,
+[datocli13_c],TUMORSIZE,
+[datocli13a_c],WIDE_TUMORSIZE,
+[datocli13b_c],HIGH_TUMORSIZE,
+[datocli13c_c],TICKNESS_TUMORSIZE,
+[datocli14_c],LOCATION_TUMORSIZE,
+[datocli14a_c],OTHER_TUMOR_LOCATION,
+[datocli141_c],RIGHT_LOBE,
+[datocli142c],LEFT_LOBE,
+[datocli143c],ISTHMUS,
+[datocli141a_c],RIGHT_LOBE_LOCATION,
+[datocli141b_c],LEFT_LOBE_LOCATION,
+[datocli141c_c],ISTHMUS_LOCATION,
+[datocli16_c],PAAF_YESNO,
+[datocli16a_c],WHO_PERFORM_PAAF,
+[datocli16a1c],OTHER_WHO_PERFORM_PAAF,
+[datocli16b_c],WHERE_PERFORM_PAAF,
+[datocli17c],DATE_PAAF,
+[datocli18c],BETHESDA,
+[datocli19c],DATE_BETHESDA,
+[datocli15],CERVICAL LYMPH NODES_YESNO,
+[datocli15a],POSTIVE_METS_MADE_BY,
+datocli21],a. ¿Sintió la boca seca?,
+[datocli22] ,b. ¿Ha tenido problemas para tragar?,
+[datocli23],c. ¿Ha tenido la voz ronca?,
+[datocli24],d. ¿Tuvo la voz débil? ,
+[datocli25],e. ¿Tuvo algún bulto en la garganta?,
+[datocli26],f. ¿Le molestal la cicatriz en su cuello?,
+[datocli27],g. ¿Se ha sentido con frío?,
+[datocli28],h. ¿Ha tenido problemas para tolerar el calor?,
+[datocli29],i. ¿Tuvo oleadas de calor (bochornos)?,
+[datocli30],j. ¿Tuvo dolor en los músculos y/o articulaciones?,
+[datocli31],k. ¿Tuvo una sensación de hormigueo en las manos y/o pies?,
+[datocli32],l. ¿Ha tenido calambres en las piernas?,
+[datocli33],m. ¿Se sintió más lento de lo habitual?,
+[datocli34],n. ¿Ha subido de peso?,
+[datocli35],"o. ¿Sintió dolor, irritación o sequedad en los ojos?",
+[datocli36],"p. ¿Ha tenido problemas de piel (por ejemplo, picazón, sequedad?",
+[datocli37],q. ¿Sufrió palpitaciones?,
+[datocli38],r. ¿Tuvo dolores de cabeza?,
+[datocli39],s. ¿Tuvo ataques repentinos de cansancio?,
+[datocli40],t. ¿Tuvo problemas para pensar?,
+[datocli41],u. ¿Tuvo problemas de atención?,
+[datocli42],v. ¿Se sintió inquieto o agitado?,
+[datocli43],w. ¿Ha tenido problemas de ansiedad?,
+[datocli44],x. ¿Qué tanto estuvo interesado en tener relaciones sexuales?,
+[exclusion1,"¿Deséa excluir en esta fase el estudio?,",
+[formulario_1_caratersticas_b ase_complete],Complete_Incomplete_unverified,
+[datotraini1],Tratamiento Inicial_Cirugia_Ablacion_Vigilancia,
+[formulario_2_tratamientos_complete],Incomplete_unverified_complete,
+[datoqui02_v2],Fecha Ingreso,
+[datoqui03_v2],Fecha Egreso,
+[datoqui06_v2],Duracion cirugia,
+[datoqui07_v2],Tipo de cirugia,
+[datoqui08_v2],Tipo de tiroidectomia,
+[datoqui09_v2],Tipo de reseccion,
+[datoqui10_v2],Vaciamiento_descripcion,
+[datoqui10a_v2],Vaciamiento_tipo,
+[datoqui101_v2],Vaciamiento_derecho_izq_checkbox,
+[datoqui102_v2],Vaciamiento_uni_bilateral,
+[datoqui102a_v2],Vaciamiento_derecho_izq_radio,
+[datoqui102u_v2],Vaciamiento_nivel,
+[datoqui102bd_v2],Vaciamiento_Derecho_nivel,
+[datoqui102bi_v2],Vaciamiento_Izq_nivel,
+[datoqui11a_v2],Complicaciones postquirúrgicas,
+[datoqui11b_v2],Complicaciones adherentes al procedimiento quirúrgico,
+[datoqui11_v2],Complicaciones_<6m_descripcion,
+[datoqui111_v2],Complicaciones_<6m ,
+[datoqui111o_v2],Complicaciones_otros_descripcion,
+[datoqui112_v2],Complicaiones >6m,
+[datoqui112a_v2],Complicacion_NLR_diagostico por clinica_laringoscopia,
+[datoqui112o_v2],Complicacion_descripcion,
+[datohis01_v2],DATOS HISTOLOGICOS_Hospitales,
+[datohis02_v2],Fecha de Histopatología,
+[datohis03_v2],Detalle del tumor,
+[datohis031_v2],Tumor_ancho,
+[datohis032_v2],Tumor_alto,
+[datohis06_v2],Tipo Histológico,
+[datohis066_v2],Tipo histologico_otro_especificar,
+[datohis07_v2],Subtipos_variante_papilar,
+[datohis08_v2],Subtipos_variante_folicular,
+[datohis09_v2],Tumor No. de áreas de invasión Unifocal,
+[datohis091_v2],Unifocal,
+[datohis092_v2],Multifocal,
+[datohis093_v2],Invasion vascular,
+[datohis094_v2],Invasion llinfatica,
+datohis0915_v2],NAI-U,
+datohis0925_v2],NAI-M ,
+datohis0935_v2],NAI-IV,
+datohis0945_v2],NAI-IL,
+datohis10_v2],Invasion cervicales ,
+datohis11_v2f],Fecha de invasion cervical,
+datohis11_v2],METS Cervicales (si o no o no se evalúa),
+datohis13_v2],Detalle de ganglios cervicales ,
+datohis14_v2f],Metastasis a distancia fecha,
+datohis14_v2],Metastasis a distancia ,
+[datohis15_v2s],Descripción de genética Mets a distancia (se hizo prueba de Dx),
+[datohis15_v2f],Fecha de Diagnostico ,
+datohis15_v2],Método de Dx,
+datohis16_v2],Biomarcadores ,
+datohis16a_v2],Fecha de realización ,
+ [datohis17_v2],Se realiza biomarcadores en el mismo centro histologico ,
+[datohis18_v2],Reporte de Tiroiditis de Hashimoto en histopatologico ,
+datohis19_v2],Bocio reportado en el histopatologico ,
+datohis20_v2],Otras patologías tiroideas reportadas ,
+datohis22_v2],Riesgo ATA,
+calculoeta,Consenso europeo ETA,
+calculoconint,Consenso Intersocietario sobre TTO,
+datohis21a_v2],Calculadora AJCC 8 TNM_C,
+datohis21a1c_v2],T del AJCC 8 TNM_C,
+datohis21a2c_v2],Metastasis del AJCC TNM_C,
+datohis21a3c_v2],Nódulos del AJCC TNM_C,
+datohis21a4c_v2],Metastasis del AJCC TNM_C,
+datohis21b1c_v2],Cálculo final del TNM ,
+datohis21c_v2],AJCC 8 MACIS (7 alto riesgo),
+exclusion2a],Desee excluir en esta fase del estudio (describa el por que) ,
+,,
+Formulario 2b ,Formulario 2b ,
+[f2b_fecha_de_visita],Fecha,
+f2bp001],Tipo de ablación ,
+f2bp002,tiempo,
+f2bp003,Power ,
+f2b9004,Energy ,
+f2bp005,Observaciones del abordaje,
+f2bp006],Complicaciones,
+f2bp006a,Descripción de otras complicaciones,
+f2bp007,Levotiroxina,
+f2bp008,numero de Sesiones,
+f2bp009,Laboratorio (TSH y T4f),
+f2bp009a,TSH,
+f2bp009b,T4f,
+f2b9010,Tamaño del nódulo,
+f2b9010a,Tamaño (mm) ancho y alto ,
+f2b9010b ,Volumen (ml) ,
+f2bp011a,Cosmetic Score ,
+f2bp011b ,Symptom Score ,
+f2bp012,Metastasis a ganglios cervicales en el ultimo seguimiento,
+f2bp013,Metastasis a distancia en el ultimo seguimiento,
+f2b9014,Cirugia ,
+f2b9015,Fecha de cirugía,
+f2btq001,Thyca Quol (boca seca) ,
+f2btq002,¿Problemas para tragar?,
+f2btq003,¿Ha tenido la voz ronca? ,
+f2btq004,¿Tuvo la voz débil? ,
+f2btq005,¿Tuvo algun bulto en la garganta? ,
+f2btq007,¿Se ha sentido con frío? ,
+f2btq008,¿Ha tenido problemas para tolerar el calor? ,
+f2btq009,¿Tuvo oleadas de calor (bochornos)?,
+f2btq010,¿Tuvo dolor en los muslos o articulaciones?,
+f2btq011,¿Tuvo una sensación de hormigueo en las mano y pies? ,
+f2btq012,¿Ha tenido calambre en las piernas? ,
+f2btq013,¿Se sintió mas lento de lo habitual? ,
+f2btq014,¿Ha subido de peso?,
+f2btq015,"¿Sintió dolor, irritación o sequedad en los ojos?",
+f2btq016,¿Ha tenido problemas de piel? ,
+f2btq017,¿Sufrió palpitaciones? ,
+f2btq018,¿Tuvo dolor de cabeza?,
+f2btq019,¿Tuvo ataques repentinos de cansancio? ,
+f2btq020,¿Tuvo problemas para pensar? ,
+f2btq021,¿tuvo problemas de atención? ,
+f2btq022,¿Se sintió inquieto y agitado?,
+f2btq023,¿Ha tenido problemas de ansiedad? ,
+f2btq024,¿Que tanto estuvo interesado en las relaciones sexuales? ,
+,,
+,,
+Formulario 2 c ,Formulario 2 c ,
+[f2c_fecha_de_visita],Fecha del formulario ,
+f2c001,¿El paciente esta bajo vigilancia activa? ,
+f2c002,Fecha de seguimiento de vigilancia activa (texto),
+f2c003,¿Se realizó ultrasonido? ,
+f2c004,Razón por la que el paciente inicio vigilancia activa ,
+f2c004a,especifique la razón del seguimiento (texto) ,
+f2c005,Fecha de la ecografia de seguimiento ,
+f2c006,Nivel serico de TSH ,
+f2c007,Tamaño en mm Nódulo #1 ,
+f2c008,Tamaño en mm Nódulo #2,
+f2c009,Tamaño en mm Nódulo #3,
+f2c010,¿Presencia de nuevo nódulo? ,
+f2c011,Tamaño en mm Nódulo nuevo ,
+f2c012,Ubicación del nuevo nódulo ,
+f2c013,¿Se hizo una biopsia del nódulo nuevo?,
+f2c014,Resultados Patología FNA ,
+f2c015,Descripción del nódulo en el informe de ultrasonido o medico,
+f2c016,Presencia de ganglios linfáticos en ultrasonido,
+f2c017,Tamaño del ganglio linfático mas grande en mm ,
+f2c018,Tamaño del ganglio linfático nuevo en mm ,
+f2cm001,Ubicación del compartimiento del ganglio linfático - Derecho Nivel I ,
+f2cm002,Izquierdo Nivel I,
+f2cm003,Derecho Nivel II,
+f2cm004,Izquierdo Nivel II,
+f2cm005,Derecho Nivel III,
+f2cm006,Izquierda Nivel III,
+f2cm007,Derecho Nivel IV ,
+f2cm008,Izquierdo Nivel IV ,
+f2cm009,Derecho Nivel V ,
+f2cm010,Izquierdo Nivel V ,
+f2cm011,Derecho Nivel VI,
+f2cm012,Izquierdo Nivel VI,
+f2c019,¿Se hizo una biopsia de los ganglios linfáticos? ,
+f2c020,Resultados de la biopsia FNA del ganglio linfático (si corresponde),
+f2c021,Especifique el resultado de la histologia ,
+f2c022,Nível FNA de tiroglobulina ,
+f2c023,¿Continuo la vigilancia activa? ,
+f2c024,Motivo por el cual la vigilancia activa continuo o se interrumpió según la documentación clinica ,
+f2c025,Si se interrumpió la vigilancia activa ¿que modalidad de tratamiento se eligió? ,
+f2ctq001,NA,
+f2ctq001,Thyca Quol - ¿Sintió la boca seca?,"1.para nada 
+2. Un poco 
+3. Bastante 
+4.mucho "
+f2ctq002,¿Ha tenido problemas para tragar?,"1.para nada 
+2. Un poco 
+3. Bastante 
+4.mucho "
+f2ctq003,¿He tenido la voz ronca?,"1.para nada 
+2. Un poco 
+3. Bastante 
+4.mucho "
+f2ctq004,¿Tuvo la voz débil?,"1.para nada 
+2. Un poco 
+3. Bastante 
+4.mucho "
+f2ctq005,¿Tuvo algun bulto en la garganta?,"1.para nada 
+2. Un poco 
+3. Bastante 
+4.mucho "
+f2ctq006,¿Le molesta la cicatriz en su cuello?,"1.para nada 
+2. Un poco 
+3. Bastante 
+4.mucho "
+f2ctq007,¿Se ha sentido con frio?,"1.para nada 
+2. Un poco 
+3. Bastante 
+4.mucho "
+f2ctq008,¿Ha tenido problemas para tolerar el calor?,"1.para nada 
+2. Un poco 
+3. Bastante 
+4.mucho "
+f2ctq009,¿Tuvo oleadas de calor (bochornos)?,"1.para nada 
+2. Un poco 
+3. Bastante 
+4.mucho "
+f2ctq010,¿tuvo dolor en los músculos y/o articulaciones?,"1.para nada 
+2. Un poco 
+3. Bastante 
+4.mucho "
+f2ctq011,¿Tuvo una sensación de hormigueo en las manos y/o pies? ,"1.para nada 
+2. Un poco 
+3. Bastante 
+4.mucho "
+f2ctq012,¿Ha tenido calambres en las piernas?,"1.para nada 
+2. Un poco 
+3. Bastante 
+4.mucho "
+f2ctq013,¿Se sintió mas lento de lo habitual? ,"1.para nada 
+2. Un poco 
+3. Bastante 
+4.mucho "
+f2ctq014,¿Ha subido de peso?,"1.para nada 
+2. Un poco 
+3. Bastante 
+4.mucho "
+f2ctq015,"¿Sintió dolor, irritación o sequedad en los ojos?","1.para nada 
+2. Un poco 
+3. Bastante 
+4.mucho "
+f2ctq016,"¿Ha tenido problemas de la piel (picazón, sequedad)","1.para nada 
+2. Un poco 
+3. Bastante 
+4.mucho "
+f2ctq017,¿Sufrió palpitaciones?,"1.para nada 
+2. Un poco 
+3. Bastante 
+4.mucho "
+f2ctq018,¿Tuvo dolores de cabeza?,"1.para nada 
+2. Un poco 
+3. Bastante 
+4.mucho "
+f2ctq019,¿Tuvo ataques repentinos de cansancio?,"1.para nada 
+2. Un poco 
+3. Bastante 
+4.mucho "
+f2ctq020,¿Tuvo problemas para pensar?,"1.para nada 
+2. Un poco 
+3. Bastante 
+4.mucho "
+f2ctq021,¿Tuvo problemas de atención? ,"1.para nada 
+2. Un poco 
+3. Bastante 
+4.mucho "
+f2ctq022,¿Se sintió inquieto o agitado?,"1.para nada 
+2. Un poco 
+3. Bastante 
+4.mucho "
+f2ctq023,¿Ha tenido problemas de ansiedad? ,"1.para nada 
+2. Un poco 
+3. Bastante 
+4.mucho "
+f2ctq024,¿Que tanto estuvo interesado en tener relaciones sexuales? ,"1.para nada 
+2. Un poco 
+3. Bastante 
+4.mucho "
+formulario_2c_complete,¿complete?,"0. Incompleto 
+1. Unverified 
+2. Complete"
+,,
+Formulario 3 de seguimiento ,Formulario 3 de seguimiento ,
+datosepa ,Hospital de seguimiento ,"CB01 CEXCA - Colombia (CB01P)
+EC01 HEE - Ecuador (EC01U)
+EC02 SOLCA UIO - Ecuador (EC02P)
+EC03 ITECC UIO - Ecuador (EC03P)
+EC04 SOLCA GYE - Ecuador (EC04P)
+EC05 SOLCA CUE - Ecuador (EC05P)
+EC06 Hospital José Carrasco Arteaga - Ecuador (EC06U)
+EC07 Hospital Regional de Ambato - Ecuador (EC07U)
+ME01 Hospital Universitario ""Dr. José E. González""
+Universidad Autónoma de Nuevo León - México (ME01U)
+PE01 Hospital Nacional Edgardo Rebagliati Martins -Perú (PE01U)
+UR01 Hospital de clínicas Dr. Manuel Quintela -Uruguay (UR01U)"
+datosepb ,ID país ,
+datosepc,ID paciente ,
+datosepd,ID entrevistador ,
+datosepe,Fecha de llenado ,
+datosep01,Número de visita programada ,
+datosep02,fecha de visita ,
+antesyodo,"Ingresar valores ""SIN ó ANTES"" de recibir YODOTERAPIA",
+exa_tsh ,examen de tsh,
+datosep03,¿Se realizo el estudio?,"1.Si
+2. No ¿por que?"
+datosep031,¿Por que? ,
+datosep04,Lugar en el que se desarrolló estudio,"1. Dentro del hospital de seguimiento 
+2. Fuera del hospital de seguimiento "
+datosep05,Fecha en que se realizó estudio,
+datosep06,Valor de TSH,
+datosep15,Valor de t4 libre ,
+[exa_tiroglobulina,examen de tiroglobulina ,
+datosep07,¿Se realizo estudio? ,"1. Si 
+2.no ¿por que? "
+datosep071,describir por que ,
+datosep08,Lugar en donde se desarrollo estudio ,"1. Dentro del hospital de seguimiento 
+2. Fuera del hospital de seguimiento "
+datosep09,Fecha en que se realizo estudio ,
+datosep010,Valor de tiroglobulina ng/dl ,
+datosep16,Valor de tiroglobulina UI/mL ,
+datosep10a,¿Que método se utilizo para medir Tiroglobulina? ,
+exa_antitiroglobulina,Anticuerpos anti tiroglobulina ,
+datosep11,¿Se realizó el estudio? ,"1. Si 
+2. No ¿por que? "
+datosep111,Describir ¿por que? ,
+datosep12,Lugar en que se desarrollo estudio,"1. Dentro del hospital de seguimiento 
+2. Fuera del hospital de seguimiento "
+datosep13,Fecha en que se realizo el estudio ,
+datosep14,Valor de anticuerpos anti tiroglobulina ,
+finantesyodo,"FINAL ingreso valores ""SIN ó ANTES"" de recibir YODOTERAPIA",
+yodo_radioactivo,Descripción tto ,
+datosep21,"¿El/la paciente recibió tratamiento con
+radioterapia?","1. Si 
+2. No 
+3. No especifica "
+datosep22,Razón por la que NO recibió iodo radiactivo,"1.no indicado por medico 
+2. Paciente no desea recibir esa terapia 
+3. No ha logrado acceder al servicio 
+4. Otra especificar "
+datosep224,Describir ,
+datosep23,Dosis de radio terapia recibida ,
+datosep24,Lugar donde recibió iodo radiactivo ,"1. Dentro del hospital de seguimiento 
+2. Fuera del hospital de seguimiento "
+datosep25,Fecha en que recibió yodo radiactivo ,
+datosep26,métodos de preparación del paciente e,"1. Withdraeal de T4
+2. RhTSH
+3.No especifica "
+datosep27,TSH estimulada ,
+datosep28,Fecha de la TSH estimulada ,
+datosep29,Tiroglobulina estimulada ,
+datosep30,Fecha tiroglobulina estimulada ,
+datosep31,Sensibilidad funcional del ensayo de Tg ,
+datosep32,Anticuerpos antiroglobulina ,"1. Positivos 
+2. Negativos 
+3.Inciertos 
+4. No especificados "
+datosep33,Trás yodo radiactivo ¿Existió presencia de tejido tiroideo residual? ,"1.si 
+2.no "
+datosep34,Trás yodo radiactivo ¿Presentó metástasis a distancia en rastreo corporal? ,"1.si, especificar 
+2. No "
+datosep341,Especificar ,
+radioterapia ,Yodo Radiactivo ,
+datosep35,¿Se indico Yodoterapia?,"1.si 
+2.no"
+datosep36,Describa el criterio de indicación para recibir yodoterapia ,
+datosep37,Número de sesiones de yodoterapia indicadas ,
+datosep38,¿El/la paciente recibió tratamiento con radioiodo?,"1.si 
+2.no"
+datosep39,Razón por la cual no recibió iodo radioactivo,"1. No indicado por medico 
+2. Paciente NO desea recibir yodoterapia 
+3. No ha logrado acceder a servicio 
+4. Otra, especifique: "
+datosep394,Especificar la razón por la cual no recibió yodo ,
+datosep40,Número de sesiones de yodoterapia recibidas ,
+datosep41,Lugar donde se realizo yodoterapia,"1.Dentro del hospital de seguimiento 
+2. FUERA del hospital de seguimiento "
+datosep42,Fecha en que inicio yodoterapia ,
+datosep43,Fecha en que termino yodoterapia,
+datosep44,¿Ha recibido OTRAS terapias? ,"1. Si (especifique que terapia NO mencionada previamente recibió)
+2. No "
+datosep442,Descripción de la terapia ,
+datosep45,¿Paciente yodo-resistente? ,"1. Si 
+2. No "
+thycaf301,Thyca Quol - ¿Sintió la boca seca?,"1.para nada 
+2. Un poco 
+3. Bastante 
+4.mucho "
+thycaf302,¿Ha tenido problemas para tragar?,"1.para nada 
+2. Un poco 
+3. Bastante 
+4.mucho "
+thycaf303,¿He tenido la voz ronca?,"1.para nada 
+2. Un poco 
+3. Bastante 
+4.mucho "
+thycaf304,¿Tuvo la voz débil?,"1.para nada 
+2. Un poco 
+3. Bastante 
+4.mucho "
+thycaf305,¿Tuvo algun bulto en la garganta?,"1.para nada 
+2. Un poco 
+3. Bastante 
+4.mucho "
+thycaf307,¿Se ha sentido con frio?,"1.para nada 
+2. Un poco 
+3. Bastante 
+4.mucho "
+thycaf308,¿Ha tenido problemas para tolerar el calor?,"1.para nada 
+2. Un poco 
+3. Bastante 
+4.mucho "
+thycaf309,¿Tuvo oleadas de calor (bochornos)?,"1.para nada 
+2. Un poco 
+3. Bastante 
+4.mucho "
+thycaf310,¿tuvo dolor en los músculos y/o articulaciones?,"1.para nada 
+2. Un poco 
+3. Bastante 
+4.mucho "
+thycaf311,¿Tuvo una sensación de hormigueo en las manos y/o pies? ,"1.para nada 
+2. Un poco 
+3. Bastante 
+4.mucho "
+thycaf312,¿Ha tenido calambres en las piernas?,"1.para nada 
+2. Un poco 
+3. Bastante 
+4.mucho "
+thycaf313,¿Se sintió mas lento de lo habitual? ,"1.para nada 
+2. Un poco 
+3. Bastante 
+4.mucho "
+thycaf314,¿Ha subido de peso?,"1.para nada 
+2. Un poco 
+3. Bastante 
+4.mucho "
+thycaf315,"¿Sintió dolor, irritación o sequedad en los ojos?","1.para nada 
+2. Un poco 
+3. Bastante 
+4.mucho "
+thycaf316,"¿Ha tenido problemas de la piel (picazón, sequedad)","1.para nada 
+2. Un poco 
+3. Bastante 
+4.mucho "
+thycaf317,¿Sufrió palpitaciones?,"1.para nada 
+2. Un poco 
+3. Bastante 
+4.mucho "
+thycaf318,¿Tuvo dolores de cabeza?,"1.para nada 
+2. Un poco 
+3. Bastante 
+4.mucho "
+thycaf319,¿Tuvo ataques repentinos de cansancio?,"1.para nada 
+2. Un poco 
+3. Bastante 
+4.mucho "
+thycaf320,¿Tuvo problemas para pensar?,"1.para nada 
+2. Un poco 
+3. Bastante 
+4.mucho "
+thycaf321,¿Tuvo problemas de atención? ,"1.para nada 
+2. Un poco 
+3. Bastante 
+4.mucho "
+thycaf322,¿Se sintió inquieto o agitado?,"1.para nada 
+2. Un poco 
+3. Bastante 
+4.mucho "
+thycaf323,¿Ha tenido problemas de ansiedad? ,"1.para nada 
+2. Un poco 
+3. Bastante 
+4.mucho "
+thycaf324,¿Que tanto estuvo interesado en tener relaciones sexuales? ,"1.para nada 
+2. Un poco 
+3. Bastante 
+4.mucho "
+ultrasonido_tiroideo,Ultrasonido Tiroideo,
+datosep69,¿Se realizó el estudio?,"1. Si 
+2. no "
+datosep70,Lugar en que se desarrollo el estudio ,"1. Dentro del hospital de seguimiento 
+2. FUERA del hospital de seguimiento (especificar)"
+datosep71,Fecha en que se realizo el estudio ,
+datosep72,Cortes en que se valoró por ultrasonido tiroideo ,"1 datosep72___1 corte transversal 
+2 datosep72___2 corte longitudinal "
+datosep73,Se empleo Doppler a color ,"1. Si
+2. No "
+datosep74,Presencia de tejido tiroideo,"1. Si 
+2. no "
+datosep75,Especificar localización de tejido tiroideo ,
+datosep76,Presencia de ganglios cervicales,"1. Si 
+2. No "
+datosep77,Localización (marque las que correspondan),"1 datosep77___1 - I
+2 datosep77___2 - II
+3 datosep77___3 - III
+4 datosep77___4 - IV
+5 datosep77___5 - V
+6 datosep77___6 - VI
+7 datosep77___7 - VII"
+datosep78,Alto ,
+datosep79,largo ,
+datosep80,espesor ,
+datosep81,Otras características de ganglios cervicales ,
+datosep82,Otros hallazgos de relevantes del ultrasonido tiroideo ,
+datosep83,Razón por la cual no se realizo el ultrasonido tiroideo ,
+[rastreo_corporal,Rastreo corporal total con I-131,
+datosep84,¿Se realizo el estudio?,"1. Si
+2.No "
+datosep85,Lugar en el que se desarrollo estudio ,"1.Dentro del hospital de seguimiento 
+2. FUERA del hospital de seguimiento "
+datosep86,Fecha en que se realizo el estudio ,
+datosep87,Prévio a la realización de este estudio el paciente ,"1. Suspendió la levotiroxina
+2. No suspendido la levotiroxina  "
+datosep88,tiempo que suspendió la levotiroxina previo al estudio,
+datosep89,Resultados de rastreo corporal total ,"1. Positivo (se observa restos de tejido tiroideo)
+2. Negativo (no se observa restos de tejido tiroideo)"
+datosep90,Lugar de recurrencia ,"1 datosep90___1 Local
+2 datosep90___2 Regional central
+3 datosep90___3 Regional lateral
+4 datosep90___4 Sistémica"
+datosep91,Observaciones sobre rastreo corporal total ,
+datosep92,¿Por que razón NO se realizó rastreo corporal total? ,
+[tomografia_computada,Tomografia computada ,
+datosep93,¿Se realizó el estudio? ,"1. Si 
+2. No"
+datosep94,Lugar en que se desarrollo estudio ,"1. Dentro del hospital de seguimiento 
+2. FUERA del hospital de seguimiento "
+datosep95,Fecha en que se realizo el estudio ,
+datosep96,Resultados de tomografia computada ,"1. Positivo (se observa restos de tejido tiroideo) 
+2. Negativo (no se observa restos de tejido tiroideo) "
+datosep97,Lugar de recurrencia ,
+datosep98,Observaciones sobre tomografia computada ,
+datosep99,¿Por que razon no se realizo la tomografía computada? ,
+pet ,Tomografia por emisión de Positrones (PET),
+datosep100,¿Se realizó el estudio?,"1. Si 
+2. No"
+datosep101,Lugar en que se realizó el estudio ,"1. Dentro del hospital de seguimiento 
+2. FUERA del hospital de seguimiento "
+datosep102,Fecha en que se realizo el estudio ,
+datosep103,Resultados de Tomografía por Emisión de Positrones ,"1. Positivo (se observa restos de tejido tiroideo) 
+2. Negativo (no se observa restos de tejido tiroideo) "
+datosep104,Lugar de recurrencia ,"1 Local
+2 Regional central
+3 Regional lateral
+4 Sistémica"
+datosep105,Observaciones sobre Tomografía por emisión de Positrones ,
+datosep106,¿Por que razon NO se realiza Tomografía por emisión de Positrones? ,
+"formulario_3_seguimiento_com
+plete",¿Complete? ,"0 Incomplete
+1 Unverified
+2 Complete"
