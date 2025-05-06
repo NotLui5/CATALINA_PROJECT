@@ -72,7 +72,7 @@ baseline to 54 months follow-up.</figcaption>
 | Risk of reference calculators | ATA2, E.T.A. 3, and the C.I.L.A. 4 | Describe the measures and detailed characteristics |
 | Treatment complications | Hypercalcemia \< 6 months and \> six months after the procedure, recurrent laryngeal nerve injury, and other complications with active surveillance. | \- |
 
-**Table 4. Description of Questionnaire 3 **
+**Table 4. Description of Questionnaire 3**
 
 | Sections of the Questionnaire | Content |
 |:---|:---|
@@ -141,7 +141,7 @@ thyroglobulin ≥ 2 to &lt; 10 ng/ml<br />
 
 </details>
 
-<br/>
+\</\>
 
 <details>
 <summary>

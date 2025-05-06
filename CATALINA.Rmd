@@ -72,7 +72,7 @@ This section shows [Tables](./TABLES.docx').
 
 
 
-**Table 4.  Description of Questionnaire 3 **
+**Table 4.  Description of Questionnaire 3**
 
 | Sections of the Questionnaire |	Content |
 |:---|:---|
