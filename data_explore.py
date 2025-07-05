@@ -190,19 +190,20 @@ hospitals_code = {'HEE': '9-', 'SOLCA-UIO': '10-', 'ITECC':'24-', 'SOLCA-GYE':'1
                   'SOLCA-CUE':'12-', 'HOSP-AMBATO': '13-', 'HOSP-JOSE-GONZ-MEX':'23-', 
                   'CLIN-ESPEC-MEX': '16-', 'HOSP-EDGARDO-PERU':'21-', 'HOSP-MANUEL-QUINT-URUGUAY': '22-'}
 
-df_ord = pd.read_excel("Hospital Ambato.xlsx")
-seen = set()
-col_order = [
-    re.sub(r'\.\d+$', '', col) 
-    for col in df_ord.columns 
-    if not str(col).startswith('Unnamed:') 
-    and not (re.sub(r'\.\d+$', '', col) in seen or seen.add(re.sub(r'\.\d+$', '', col)))
-]
-col_order.remove('record')
-col_order.remove('ETNNIA_TEXT')
-col_order.remove('TiRADS_DESCRIBE')
-col_order_2 = [col for col in transposed_df.columns if col not in col_order]
-transposed_df = transposed_df[col_order + col_order_2]
+df_ord = pd.read_excel("Orden de variables.xlsx")
+# seen = set()
+# col_order = [
+#     re.sub(r'\.\d+$', '', col) 
+#     for col in df_ord.columns 
+#     if not str(col).startswith('Unnamed:') 
+#     and not (re.sub(r'\.\d+$', '', col) in seen or seen.add(re.sub(r'\.\d+$', '', col)))
+# ]
+# col_order.remove('record')
+# col_order.remove('ETNNIA_TEXT')
+# col_order.remove('TiRADS_DESCRIBE')
+# col_order_2 = [col for col in transposed_df.columns if col not in col_order]
+col_order  = list(df_ord.columns)
+transposed_df = transposed_df[col_order]
 
 def export_to_excel_with_sheets(basedf, hospitals_code, output_file="Registers_catalina_part4.xlsx"):
     with pd.ExcelWriter(output_file, engine='openpyxl') as writer:
