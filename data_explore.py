@@ -1,6 +1,7 @@
 import requests
 import pandas as pd
 import xlwings as xw
+import regex as re
 
 def get_yellow_rows(file_path, sheet_name=None):
     """
@@ -137,18 +138,17 @@ for var in xyr[0]:
     # if not any(var in item.values() for item in d1):
         fields[f'fields[{f}]'] = var
         f += 1  
-fields1 = {}
 # print(fields)
 
 data = {
-    'token': '3ECC702833A265FFDBFB3DD4E1911E7A',
+    'token': '3ECC702833A265FFDBFB3DD4E1911E7A', 
     'content': 'record',
     'action': 'export',
     'format': 'json',
     'type': 'eav',
     'csvDelimiter': '',
-    # 'forms[0]': 'formulario_1_caratersticas_base',
-    # 'forms[1]': 'formulario_2_tratamientos',
+    'forms[0]': 'formulario_1_caratersticas_base',
+    'forms[1]': 'formulario_2a_post_tiroidectomia',
     'rawOrLabel': 'label',
     'rawOrLabelHeaders': 'label',
     'exportCheckboxLabel': 'false',
@@ -184,9 +184,42 @@ transposed_df = df2.pivot_table(
 ).reset_index()
 name_mapping = dict(zip(xyr[0], xyr[1]))
 transposed_df = transposed_df.rename(columns=name_mapping)
+transposed_df = transposed_df.drop(columns='record')
+# transposed_df.to_csv("Registers_catalina_part2.csv", encoding='utf-8-sig')
+hospitals_code = {'HEE': '9-', 'SOLCA-UIO': '10-', 'ITECC':'24-', 'SOLCA-GYE':'11-',
+                  'SOLCA-CUE':'12-', 'HOSP-AMBATO': '13-', 'HOSP-JOSE-GONZ-MEX':'23-', 
+                  'CLIN-ESPEC-MEX': '16-', 'HOSP-EDGARDO-PERU':'21-', 'HOSP-MANUEL-QUINT-URUGUAY': '22-'}
 
-transposed_df.to_csv("Registers_catalina_part1.csv", encoding='utf-8-sig')
-# print(transposed_df)
-print("*******************************************************\n")
-desc = transposed_df.describe()
-desc.to_csv("summary_register1.csv", encoding='utf-8-sig')
+df_ord = pd.read_excel("Hospital Ambato.xlsx")
+seen = set()
+col_order = [
+    re.sub(r'\.\d+$', '', col) 
+    for col in df_ord.columns 
+    if not str(col).startswith('Unnamed:') 
+    and not (re.sub(r'\.\d+$', '', col) in seen or seen.add(re.sub(r'\.\d+$', '', col)))
+]
+col_order.remove('record')
+col_order.remove('ETNNIA_TEXT')
+col_order.remove('TiRADS_DESCRIBE')
+col_order_2 = [col for col in transposed_df.columns if col not in col_order]
+transposed_df = transposed_df[col_order + col_order_2]
+
+def export_to_excel_with_sheets(basedf, hospitals_code, output_file="Registers_catalina_part4.xlsx"):
+    with pd.ExcelWriter(output_file, engine='openpyxl') as writer:
+        for hospital_name, prefix in hospitals_code.items():
+            filtered_df = basedf[basedf['CODIGO ID'].str.startswith(prefix, na=False)]
+            filtered_df.to_excel(
+                writer, 
+                sheet_name=f"{hospital_name}_data", 
+                index=False
+            )
+                        
+            summary_df = filtered_df.describe(include='all')
+            summary_df.to_excel(
+                writer, 
+                sheet_name=f"{hospital_name}_stats", 
+                index=True
+            )
+
+
+export_to_excel_with_sheets(transposed_df, hospitals_code)
