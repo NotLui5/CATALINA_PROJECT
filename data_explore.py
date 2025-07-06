@@ -190,7 +190,7 @@ hospitals_code = {'HEE': '9-', 'SOLCA-UIO': '10-', 'ITECC':'24-', 'SOLCA-GYE':'1
                   'SOLCA-CUE':'12-', 'HOSP-AMBATO': '13-', 'HOSP-JOSE-GONZ-MEX':'23-', 
                   'CLIN-ESPEC-MEX': '16-', 'HOSP-EDGARDO-PERU':'21-', 'HOSP-MANUEL-QUINT-URUGUAY': '22-'}
 
-df_ord = pd.read_excel("Orden de variables.xlsx")
+df_ord = pd.read_excel("Orden de variables 2.xlsx")
 # seen = set()
 # col_order = [
 #     re.sub(r'\.\d+$', '', col) 
@@ -205,7 +205,7 @@ df_ord = pd.read_excel("Orden de variables.xlsx")
 col_order  = list(df_ord.columns)
 transposed_df = transposed_df[col_order]
 
-def export_to_excel_with_sheets(basedf, hospitals_code, output_file="Registers_catalina_part4.xlsx"):
+def export_to_excel_with_sheets(basedf, hospitals_code, output_file="Registers_catalina_part5.xlsx"):
     with pd.ExcelWriter(output_file, engine='openpyxl') as writer:
         for hospital_name, prefix in hospitals_code.items():
             filtered_df = basedf[basedf['CODIGO ID'].str.startswith(prefix, na=False)]
