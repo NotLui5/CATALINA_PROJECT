@@ -61,7 +61,7 @@ from sklearn.impute import SimpleImputer
 X = d1.drop('RECURRENCE', axis=1)
 y = d1['RECURRENCE']  # outcome variable
             
-# Calculate Spearman correlation matrix with pandas, also we can w spermancor but there is an error about minimun data 
+# Calculate Spearman correlation matrix with pandas, also we can w spermancor but there is an error about minimun data  https://www.yourdatateacher.com/2021/05/05/feature-selection-in-machine-learning-using-lasso-regression/
 corr_matrix_spearman = X.corr(method='spearman')
 corr_matrix_spearman.to_excel("spearman_corr.xlsx")
 
@@ -86,7 +86,7 @@ print("sperman_high_results.txt created to consider in variable selection.")
 # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
 
 # Fit LassoCV to find the best alpha but with NaN value we have to impute
-imputer = SimpleImputer(strategy='median')  # o 'mean', 'most_frequent' ALL WERE SAME RESULTS
+imputer = SimpleImputer(strategy='median')  # o 'mean', 'most_frequent' ALL WERE SAME RESULTS multiple imputation (replacing missing values with multiple plausible estimates),52 regression imputation (using fitted models to predict missing values), reference values (eg, mean or median age-sex values)
 # X_train_imputed = imputer.fit_transform(X_train)
 # X_test_imputed = imputer.transform(X_test)
 X_imputed = imputer.fit_transform(X)
@@ -123,9 +123,9 @@ print("Features selected:", list(selected_features_lasso))
 # Test train split LOGISTIC REGRESION / naive bayes
 from sklearn.linear_model import LogisticRegression
 x = list(selected_features_lasso)
-x.append('ATA2025LAST_ULTIMA_CONSULTA')
-d1 = d1[x]
-X_train, X_test, y_train, y_test = train_test_split(d1.drop('ATA2025LAST_ULTIMA_CONSULTA', axis = 1), d1['ATA2025LAST_ULTIMA_CONSULTA'], train_size=0.8, random_state=0)
+x.append('RECURRENCE')
+d1_lasso = d1[x]
+X_train, X_test, y_train, y_test = train_test_split(d1_lasso.drop('RECURRENCE', axis = 1), d1_lasso['RECURRENCE'], train_size=0.9, random_state=42) # pmsampsize’ and ‘pmvalsampsize
 LogReg = LogisticRegression(solver = 'lbfgs')
 LogReg.fit(X_train, y_train)
 
