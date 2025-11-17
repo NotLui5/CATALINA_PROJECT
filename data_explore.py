@@ -105,10 +105,9 @@ def get_yellow_cells(file_path, sheet_name=None):
         app.quit()
 
 # Ejemplo de uso
-celdas_amarillas = get_yellow_rows('Libro de codigos.xlsx')
+celdas_amarillas = get_yellow_rows('Libro de codigos.xlsx') ############
 xyr = pd.DataFrame(celdas_amarillas)
-# print(celdas_amarillas)
-
+print(celdas_amarillas)
 xyr[0] = [x.replace("[", "").replace("]", "").replace(" ", "") for x in xyr[0]]
 
 headers = {
@@ -130,6 +129,9 @@ r1 = requests.post('https://redcap.solcaquito.org.ec/api/',
                   verify=False) # Disable SSL verification if needed
 print("*******************************************************\n")
 d1 = r1.json() # Get the fields name
+code_book = pd.DataFrame(d1)
+with pd.ExcelWriter("./code_book/Libro de codigos redcap.xlsx", engine='openpyxl') as writer:
+    code_book.to_excel(writer, sheet_name="code_book_redcap", index=False)
 
 f = 0
 fields = {}
@@ -138,7 +140,7 @@ for var in xyr[0]:
     # if not any(var in item.values() for item in d1):
         fields[f'fields[{f}]'] = var
         f += 1  
-# print(fields)
+print(fields)
 
 data = {
     'token': '3ECC702833A265FFDBFB3DD4E1911E7A', 
@@ -147,8 +149,9 @@ data = {
     'format': 'json',
     'type': 'eav',
     'csvDelimiter': '',
-    'forms[0]': 'formulario_1_caratersticas_base',
-    'forms[1]': 'formulario_2a_post_tiroidectomia',
+    # 'forms[0]': 'formulario_1_caratersticas_base',############
+    # 'forms[1]': 'formulario_2a_post_tiroidectomia',############
+    # 'forms[0]': 'formulario_3_seguimiento', ############
     'rawOrLabel': 'label',
     'rawOrLabelHeaders': 'label',
     'exportCheckboxLabel': 'false',
@@ -190,7 +193,8 @@ hospitals_code = {'HEE': '9-', 'SOLCA-UIO': '10-', 'ITECC':'24-', 'SOLCA-GYE':'1
                   'SOLCA-CUE':'12-', 'HOSP-AMBATO': '13-', 'HOSP-JOSE-GONZ-MEX':'23-', 
                   'CLIN-ESPEC-MEX': '16-', 'HOSP-EDGARDO-PERU':'21-', 'HOSP-MANUEL-QUINT-URUGUAY': '22-'}
 
-df_ord = pd.read_excel("Orden de variables 2.xlsx")
+df_ord = pd.read_excel("./gold_order/Orden de variables 3.xlsx") ############
+df_ord2 = pd.read_excel("./gold_order/Orden de variables form 3.xlsx") ############
 # seen = set()
 # col_order = [
 #     re.sub(r'\.\d+$', '', col) 
@@ -202,13 +206,18 @@ df_ord = pd.read_excel("Orden de variables 2.xlsx")
 # col_order.remove('ETNNIA_TEXT')
 # col_order.remove('TiRADS_DESCRIBE')
 # col_order_2 = [col for col in transposed_df.columns if col not in col_order]
-col_order  = list(df_ord.columns)
+col_order1  = list(df_ord.columns) ############
+col_order2  = list(df_ord2.columns) ############
+col_order3 = col_order1 + col_order2  
+col_order = [col for col in col_order3 if col in transposed_df.columns]
 transposed_df = transposed_df[col_order]
+# transposed_df = transposed_df[col_order + extra_cols] ############
 
-def export_to_excel_with_sheets(basedf, hospitals_code, output_file="Registers_catalina_part5.xlsx"):
+def export_to_excel_with_sheets(basedf, hospitals_code, output_file="./data_extracted/Registers_catalina_part10_wforms3.xlsx"): ##########
     with pd.ExcelWriter(output_file, engine='openpyxl') as writer:
         for hospital_name, prefix in hospitals_code.items():
             filtered_df = basedf[basedf['CODIGO ID'].str.startswith(prefix, na=False)]
+            # filtered_df = basedf[basedf['ID paciente '].str.startswith(prefix, na=False)]
             filtered_df.to_excel(
                 writer, 
                 sheet_name=f"{hospital_name}_data", 
