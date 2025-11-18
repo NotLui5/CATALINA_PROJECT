@@ -77,6 +77,7 @@ for col in corr_matrix_spearman.columns:
                 # print(f"For {col}, has a {value} sperman correlation with {corr_matrix_spearman[corr_matrix_spearman[col] < -0.8].index[0]}")
                 sperman_high.append(f"{col} - {value} - {corr_matrix_spearman[corr_matrix_spearman[col] < -0.8].index[0]}")
 
+
 with open("./variable_selection/sperman_high_results.txt", "w") as file:
     for _ in sperman_high:
         file.write(f"{_} \n")
