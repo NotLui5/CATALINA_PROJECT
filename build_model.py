@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np 
 
 ### Import the data
-data_base = pd.read_excel("Base_pos_limpeza_V9_with Record ID.xlsx")
+data_base = pd.read_excel("database/Base_pos_limpeza_V9_with Record ID.xlsx")
 # data_base.sample(5)
 ## Fix col values
 # d1 = pd.get_dummies(data_base, drop_first=True,) # If all were like yes/not 
@@ -57,6 +57,8 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 from sklearn.feature_selection import SelectFromModel
 from sklearn.impute import SimpleImputer
+from sklearn.experimental import enable_iterative_imputer  #Regression imputation​​
+from sklearn.impute import IterativeImputer  #Regression imputation​​
 
 X = d1.drop('RECURRENCE', axis=1)
 y = d1['RECURRENCE']  # outcome variable
@@ -87,10 +89,14 @@ print("sperman_high_results.txt created to consider in variable selection.")
 # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
 
 # Fit LassoCV to find the best alpha but with NaN value we have to impute
-imputer = SimpleImputer(strategy='median')  # o 'mean', 'most_frequent' ALL WERE SAME RESULTS multiple imputation (replacing missing values with multiple plausible estimates),52 regression imputation (using fitted models to predict missing values), reference values (eg, mean or median age-sex values)
+#imputer = SimpleImputer(strategy='median')  # o 'mean', 'most_frequent' ALL WERE SAME RESULTS multiple imputation (replacing missing values with multiple plausible estimates),52 regression imputation (using fitted models to predict missing values), reference values (eg, mean or median age-sex values)
 # X_train_imputed = imputer.fit_transform(X_train)
 # X_test_imputed = imputer.transform(X_test)
-X_imputed = imputer.fit_transform(X)
+#X_imputed = imputer.fit_transform(X)
+
+#Iterative Imputer (regression imputation)
+imp = IterativeImputer(max_iter=10, random_state=0, sample_posterior= False) #
+X_imputed = imp.fit_transform(X)
 
 scaler = StandardScaler()
 # X_train_scaled = scaler.fit_transform(X_train_imputed)
