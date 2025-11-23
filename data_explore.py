@@ -105,7 +105,7 @@ def get_yellow_cells(file_path, sheet_name=None):
         app.quit()
 
 # Ejemplo de uso
-celdas_amarillas = get_yellow_rows('Libro de codigos.xlsx') ############
+celdas_amarillas = get_yellow_rows('./code_book/Libro de codigos.xlsx') ############
 xyr = pd.DataFrame(celdas_amarillas)
 print(celdas_amarillas)
 xyr[0] = [x.replace("[", "").replace("]", "").replace(" ", "") for x in xyr[0]]
@@ -150,7 +150,7 @@ data = {
     'type': 'eav',
     'csvDelimiter': '',
     # 'forms[0]': 'formulario_1_caratersticas_base',############
-    # 'forms[1]': 'formulario_2a_post_tiroidectomia',############
+    # 'forms[0]': 'formulario_2_tratamientos',############
     # 'forms[0]': 'formulario_3_seguimiento', ############
     'rawOrLabel': 'label',
     'rawOrLabelHeaders': 'label',
