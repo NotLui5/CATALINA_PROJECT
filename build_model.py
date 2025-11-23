@@ -50,7 +50,6 @@ cols_remove = ["record_id", "ATA2015_ULTIMA_CONSULTA", "ATA2025LAST_ULTIMA_CONSU
 d1 = d1.drop(cols_remove, axis=1) # Remove col innecesary
 # d1.isna().sum() /359 * 100
 
-
 # Sperman Correlation and LASSO to select best variables
 from sklearn.linear_model import LassoCV
 from sklearn.preprocessing import StandardScaler
@@ -95,6 +94,16 @@ print("sperman_high_results.txt created to consider in variable selection.")
 #X_imputed = imputer.fit_transform(X)
 
 #Iterative Imputer (regression imputation)
+
+# imputation_moda = ['RADIOTHERAPY EXPOSURE', 'FAMILY HISTORY OF THYROID CANCER', 'THYROID DISEASE PREOP', 'EXTRATHYROIDALEXTENSION', 'POSITIVELYMPHNODEN1', 'HASHIMOTO THYROIDITIS', 'ANTI TG FOLLOW UP (POSITIVE or NEGATIVE)', 'SUBTYPE_FOLLI_PAPIL']
+# imputation_median = ['BMI', 'TUMORSIZE (cm)', 'RAIDOSE', 'ANTI TG FOLLOW UP','TG FOLLOW UP']
+# print(type(X))
+# imputer = SimpleImputer(strategy='median')
+# array1 = imputer.fit_transform(X[imputation_median])
+# imputer = SimpleImputer(strategy='most_frequent')
+# array2 = imputer.fit_transform(X[imputation_moda])
+# X_imputed = np.hstack((array1, array2))
+
 imp = IterativeImputer(max_iter=10, random_state=0, sample_posterior= False) #
 X_imputed = imp.fit_transform(X)
 
