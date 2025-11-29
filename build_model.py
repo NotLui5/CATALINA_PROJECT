@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np 
 
 ### Import the data
-data_base = pd.read_excel("Base_pos_limpeza_V9_with Record ID.xlsx")
+data_base = pd.read_excel("database/Base_pos_limpeza_V9_with Record ID.xlsx")
 # data_base.sample(5)
 ## Fix col values
 # d1 = pd.get_dummies(data_base, drop_first=True,) # If all were like yes/not 
@@ -50,20 +50,21 @@ cols_remove = ["record_id", "ATA2015_ULTIMA_CONSULTA", "ATA2025LAST_ULTIMA_CONSU
 d1 = d1.drop(cols_remove, axis=1) # Remove col innecesary
 # d1.isna().sum() /359 * 100
 
-
 # Sperman Correlation and LASSO to select best variables
 from sklearn.linear_model import LassoCV
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 from sklearn.feature_selection import SelectFromModel
 from sklearn.impute import SimpleImputer
+from sklearn.experimental import enable_iterative_imputer  #Regression imputation​​
+from sklearn.impute import IterativeImputer  #Regression imputation​​
 
 X = d1.drop('RECURRENCE', axis=1)
 y = d1['RECURRENCE']  # outcome variable
             
 # Calculate Spearman correlation matrix with pandas, also we can w spermancor but there is an error about minimun data  https://www.yourdatateacher.com/2021/05/05/feature-selection-in-machine-learning-using-lasso-regression/
 corr_matrix_spearman = X.corr(method='spearman')
-corr_matrix_spearman.to_excel("spearman_corr.xlsx")
+corr_matrix_spearman.to_excel("./variable_selection/spearman_corr.xlsx")
 
 sperman_high = []
 for col in corr_matrix_spearman.columns:
@@ -77,6 +78,7 @@ for col in corr_matrix_spearman.columns:
                 # print(f"For {col}, has a {value} sperman correlation with {corr_matrix_spearman[corr_matrix_spearman[col] < -0.8].index[0]}")
                 sperman_high.append(f"{col} - {value} - {corr_matrix_spearman[corr_matrix_spearman[col] < -0.8].index[0]}")
 
+
 with open("./variable_selection/sperman_high_results.txt", "w") as file:
     for _ in sperman_high:
         file.write(f"{_} \n")
@@ -86,10 +88,24 @@ print("sperman_high_results.txt created to consider in variable selection.")
 # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
 
 # Fit LassoCV to find the best alpha but with NaN value we have to impute
-imputer = SimpleImputer(strategy='median')  # o 'mean', 'most_frequent' ALL WERE SAME RESULTS multiple imputation (replacing missing values with multiple plausible estimates),52 regression imputation (using fitted models to predict missing values), reference values (eg, mean or median age-sex values)
+#imputer = SimpleImputer(strategy='median')  # o 'mean', 'most_frequent' ALL WERE SAME RESULTS multiple imputation (replacing missing values with multiple plausible estimates),52 regression imputation (using fitted models to predict missing values), reference values (eg, mean or median age-sex values)
 # X_train_imputed = imputer.fit_transform(X_train)
 # X_test_imputed = imputer.transform(X_test)
-X_imputed = imputer.fit_transform(X)
+#X_imputed = imputer.fit_transform(X)
+
+#Iterative Imputer (regression imputation)
+
+# imputation_moda = ['RADIOTHERAPY EXPOSURE', 'FAMILY HISTORY OF THYROID CANCER', 'THYROID DISEASE PREOP', 'EXTRATHYROIDALEXTENSION', 'POSITIVELYMPHNODEN1', 'HASHIMOTO THYROIDITIS', 'ANTI TG FOLLOW UP (POSITIVE or NEGATIVE)', 'SUBTYPE_FOLLI_PAPIL']
+# imputation_median = ['BMI', 'TUMORSIZE (cm)', 'RAIDOSE', 'ANTI TG FOLLOW UP','TG FOLLOW UP']
+# print(type(X))
+# imputer = SimpleImputer(strategy='median')
+# array1 = imputer.fit_transform(X[imputation_median])
+# imputer = SimpleImputer(strategy='most_frequent')
+# array2 = imputer.fit_transform(X[imputation_moda])
+# X_imputed = np.hstack((array1, array2))
+
+imp = IterativeImputer(max_iter=10, random_state=0, sample_posterior= False) #
+X_imputed = imp.fit_transform(X)
 
 scaler = StandardScaler()
 # X_train_scaled = scaler.fit_transform(X_train_imputed)
