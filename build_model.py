@@ -1,6 +1,7 @@
 ## Logistic Regression
 import pandas as pd
 import numpy as np 
+import os
 
 ### Import the data
 data_base = pd.read_excel("database/Base_pos_limpeza_V9_with Record ID.xlsx")
@@ -34,15 +35,19 @@ d1["SUBTYPE_FOLLI_PAPIL"]  = d1['FOLLICULARSUBTYPE'].fillna(d1['PAPILLARYSUBTYPE
 print("New SUBTYPE_FOLLI_PAPIL col from FOLLICULARSUBTYPE _ and _ PAPILLARYSUBTYPE cols")
 
 # fillna = 0 porque no era neesario que se reporte ese valor
-d1["NUMBEROFLYMPHNODEEXCISION"] = d1["NUMBEROFLYMPHNODEEXCISION"].fillna(0)
-d1["NUMBEROFPOSITIVELYMPHNODEEXCISION"] = d1["NUMBEROFPOSITIVELYMPHNODEEXCISION"].fillna(0)
-d1["LN RATIO"] = d1["LN RATIO"].fillna(0)
-d1["SIZEOFPOSITIVELYMPHNODE(cm)"] = d1["SIZEOFPOSITIVELYMPHNODE(cm)"].fillna(0)
-d1["EXTRANODALEXTENSION"] = d1["EXTRANODALEXTENSION"].fillna(0)
-d1["TSH PRE RAI"] = d1["TSH PRE RAI"].fillna(0) 
-d1["TG PRE RAI"] = d1["TG PRE RAI"].fillna(0)                                 
-d1["ANTI TG PRE RAI (POSITIVE or NEGATIVE)"] = d1["ANTI TG PRE RAI (POSITIVE or NEGATIVE)"].fillna(0)
-d1["ANTI TG PRE RAI "] = d1["ANTI TG PRE RAI "].fillna(0)
+col_fill_na = [
+    "NUMBEROFLYMPHNODEEXCISION",
+    "NUMBEROFPOSITIVELYMPHNODEEXCISION",
+    "LN RATIO",
+    "SIZEOFPOSITIVELYMPHNODE(cm)",
+    "EXTRANODALEXTENSION",
+    "TSH PRE RAI",
+    "TG PRE RAI",
+    "ANTI TG PRE RAI (POSITIVE or NEGATIVE)",
+    "ANTI TG PRE RAI "
+]
+d1.loc[:, col_fill_na] = d1.loc[:, col_fill_na].fillna(0)
+
 print("Na value filled with 0")
 
 # Remove variables innecesary:
@@ -78,59 +83,60 @@ for col in corr_matrix_spearman.columns:
                 # print(f"For {col}, has a {value} sperman correlation with {corr_matrix_spearman[corr_matrix_spearman[col] < -0.8].index[0]}")
                 sperman_high.append(f"{col} - {value} - {corr_matrix_spearman[corr_matrix_spearman[col] < -0.8].index[0]}")
 
-
-with open("./variable_selection/sperman_high_results.txt", "w") as file:
-    for _ in sperman_high:
-        file.write(f"{_} \n")
+path_sperman = "./variable_selection/sperman_high_results.txt"
+if not os.path.exists(path_sperman):
+    with open(path_sperman, "w") as file:
+        for _ in sperman_high:
+            file.write(f"{_} \n")
 print("sperman_high_results.txt created to consider in variable selection.")
 
 # Load data and split into training and testing sets to LASSO #########
 # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
 
-# Fit LassoCV to find the best alpha but with NaN value we have to impute
-#imputer = SimpleImputer(strategy='median')  # o 'mean', 'most_frequent' ALL WERE SAME RESULTS multiple imputation (replacing missing values with multiple plausible estimates),52 regression imputation (using fitted models to predict missing values), reference values (eg, mean or median age-sex values)
-# X_train_imputed = imputer.fit_transform(X_train)
-# X_test_imputed = imputer.transform(X_test)
-#X_imputed = imputer.fit_transform(X)
+# Fit LassoCV to find the best alpha but with NaN value we have to impute    
+# Simple imputation
+imputation_moda = ['RADIOTHERAPY EXPOSURE', 'FAMILY HISTORY OF THYROID CANCER', 'THYROID DISEASE PREOP', 'EXTRATHYROIDALEXTENSION', 'POSITIVELYMPHNODEN1', 'HASHIMOTO THYROIDITIS', 'ANTI TG FOLLOW UP (POSITIVE or NEGATIVE)', 'SUBTYPE_FOLLI_PAPIL']
+imputation_median_mean = ['BMI', 'TUMORSIZE (cm)', 'RAIDOSE', 'ANTI TG FOLLOW UP','TG FOLLOW UP']
 
-#Iterative Imputer (regression imputation)
+imputer = SimpleImputer(strategy='median')
+array1 = imputer.fit_transform(X[imputation_median_mean])
+imputer = SimpleImputer(strategy='most_frequent')
+array2 = imputer.fit_transform(X[imputation_moda])
+X_imputed_median = np.hstack((array1, array2))
 
-# imputation_moda = ['RADIOTHERAPY EXPOSURE', 'FAMILY HISTORY OF THYROID CANCER', 'THYROID DISEASE PREOP', 'EXTRATHYROIDALEXTENSION', 'POSITIVELYMPHNODEN1', 'HASHIMOTO THYROIDITIS', 'ANTI TG FOLLOW UP (POSITIVE or NEGATIVE)', 'SUBTYPE_FOLLI_PAPIL']
-# imputation_median = ['BMI', 'TUMORSIZE (cm)', 'RAIDOSE', 'ANTI TG FOLLOW UP','TG FOLLOW UP']
-# print(type(X))
-# imputer = SimpleImputer(strategy='median')
-# array1 = imputer.fit_transform(X[imputation_median])
-# imputer = SimpleImputer(strategy='most_frequent')
-# array2 = imputer.fit_transform(X[imputation_moda])
-# X_imputed = np.hstack((array1, array2))
+imputer = SimpleImputer(strategy='mean')
+array1 = imputer.fit_transform(X[imputation_median_mean])
+X_imputed_mean = np.hstack((array1, array2))
 
+# Iterative imputation
 imp = IterativeImputer(max_iter=10, random_state=0, sample_posterior= False) #
-X_imputed = imp.fit_transform(X)
+X_imputed_iter = imp.fit_transform(X)
 
 scaler = StandardScaler()
-# X_train_scaled = scaler.fit_transform(X_train_imputed)
-# X_test_scaled = scaler.transform(X_test_imputed)
-X_scaled = scaler.fit_transform(X_imputed)
+X_scaled_iter = scaler.fit_transform(X_imputed_iter)
+X_scaled_mean = scaler.fit_transform(X_imputed_mean)
+X_scaled_median = scaler.fit_transform(X_imputed_median)
 
-lasso_cv = LassoCV(cv=5, random_state=0)
+#Selection
+def select_laso_imput(X_scaled_imputed, y, imput, cv_laso=5, random_state_laso=0):
+    lasso_cv = LassoCV(cv=cv_laso, random_state=random_state_laso)
+    lasso_cv.fit(X_scaled_imputed, y)
+    print("Best alpha:", lasso_cv.alpha_)    
+    sfm = SelectFromModel(lasso_cv, threshold = None, prefit=True)
+    selected_feature_idx = sfm.get_support(indices=True)
+    selected_features_lasso = X.columns[selected_feature_idx]
+    
+    path_variables = "./variable_selection/variables.txt"
+    with open(path_variables, "a") as file:
+        file.write(f"With {lasso_cv} selected {imput}: {list(selected_features_lasso)}\n")
+    print(f"Features selected imputation {imput}: {list(selected_features_lasso)}")
+    
+    return selected_features_lasso
+    
+var_iter = select_laso_imput(X_scaled_iter, y, "iterative")
+var_mean = select_laso_imput(X_scaled_mean, y, "mean")
+var_median = select_laso_imput(X_scaled_median, y, "median")
 
-# lasso_cv.fit(X_train_scaled, y_train)
-lasso_cv.fit(X_scaled, y)
-print("Best alpha:", lasso_cv.alpha_)
-
-# Select features with LASSO
-sfm = SelectFromModel(lasso_cv, threshold = None, prefit=True)
-# sfm.estimator.coef_
-# X_train_selected = sfm.transform(X_train_scaled)
-# X_test_selected = sfm.transform(X_test_scaled)
-# X_selected = sfm.transform(X_scaled)
-# Obtener nombres de características seleccionadas
-selected_feature_idx = sfm.get_support(indices=True)
-selected_features_lasso = X.columns[selected_feature_idx]
-
-with open("./variable_selection/variables.txt", "a") as file:
-    file.write(f"With {lasso_cv} selected: {list(selected_features_lasso)}")
-print("Features selected:", list(selected_features_lasso))
 
 
 # Eventos en cada base antes de LASSO 80/20 Training/Testing 
@@ -138,10 +144,7 @@ print("Features selected:", list(selected_features_lasso))
 
 # Test train split LOGISTIC REGRESION / naive bayes
 from sklearn.linear_model import LogisticRegression
-x = list(selected_features_lasso)
-x.append('RECURRENCE')
-d1_lasso = d1[x]
-X_train, X_test, y_train, y_test = train_test_split(d1_lasso.drop('RECURRENCE', axis = 1), d1_lasso['RECURRENCE'], train_size=0.9, random_state=42) # pmsampsize’ and ‘pmvalsampsize
+X_train, X_test, y_train, y_test = train_test_split(X_imputed_mean, y, train_size=0.9, random_state=42) # pmsampsize’ and ‘pmvalsampsize
 LogReg = LogisticRegression(solver = 'lbfgs')
 LogReg.fit(X_train, y_train)
 
