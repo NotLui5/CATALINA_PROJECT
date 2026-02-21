@@ -1,0 +1,82 @@
+DNI 
+CONSENT_INFORM 
+WEIGHT 
+HIGHT 
+#TABACCOS 
+TIME_SMOKING 
+TIME_STOP_SMOKING 
+SMOKE_D/M/Y 
+DESCRIBE_CARDIAC_COMORBIDITIES 
+DESCRIBE_RESPIRATORY_COMORBIDITIES 
+DESCRIBE_HEPATIC_COMORBIDITIES 
+DESCRIBE_RENAL_COMORBIDITIES 
+DESCRIBE_BLOOD_COMORBIDITIES 
+DESCRIBE_COVID_COMORBIDITIES 
+DESCRIBE_OTHER_COMORBIDITIES 
+THYROID_FUNCTION_YESNO 
+TiRADS_COMPOSITION 
+TiRADS_ECHOGENICITY 
+TiRADS_SHAPE 
+TiRADS_MARGIN 
+TiRADS_FOCOS 
+RIGHT_LOBE_LOCATION 
+LEFT_LOBE_LOCATION 
+ISTHMUS_LOCATION 
+OTHER_TUMOR_LOCATION 
+WHO_PERFORM_PAAF 
+OTHER_WHO_PERFORM_PAAF 
+WHERE_PERFORM_PAAF 
+DATE_PAAF 
+DATE_BETHESDA 
+INTERVIEW_DATE 
+a. ¿Sintió la boca seca? 
+b. ¿Ha tenido problemas para tragar? 
+c. ¿Ha tenido la voz ronca? 
+d. ¿Tuvo la voz débil?  
+e. ¿Tuvo algún bulto en la garganta? 
+f. ¿Le molestal la cicatriz en su cuello? 
+g. ¿Se ha sentido con frío? 
+h. ¿Ha tenido problemas para tolerar el calor? 
+i. ¿Tuvo oleadas de calor (bochornos)? 
+j. ¿Tuvo dolor en los músculos y/o articulaciones? 
+k. ¿Tuvo una sensación de hormigueo en las manos y/o pies? 
+l. ¿Ha tenido calambres en las piernas? 
+m. ¿Se sintió más lento de lo habitual? 
+n. ¿Ha subido de peso? 
+o. ¿Sintió dolor, irritación o sequedad en los ojos? 
+p. ¿Ha tenido problemas de piel (por ejemplo, picazón, sequedad? 
+q. ¿Sufrió palpitaciones? 
+r. ¿Tuvo dolores de cabeza? 
+s. ¿Tuvo ataques repentinos de cansancio? 
+JOB_RADIATION_EXPOSURE 
+DESCRIBE_RADIATION 
+t. ¿Tuvo problemas para pensar? 
+u. ¿Tuvo problemas de atención? 
+v. ¿Se sintió inquieto o agitado? 
+w. ¿Ha tenido problemas de ansiedad? 
+x. ¿Qué tanto estuvo interesado en tener relaciones sexuales? 
+OTHER_NODULE_YESNO 
+DATE_CORE_BIOPSY 
+BIRTHDATE 
+AGE 
+CITY_BIRTH 
+ETHNICITY 
+DATOS HISTOLOGICOS_Hospitales 
+Fecha de Histopatología 
+Tipo histologico_otro_especificar 
+Método de Dx 
+Fecha de Diagnostico  
+Descripción de genética Mets a distancia (se hizo prueba de Dx) 
+Biomarcadores  
+Fecha de realización  
+Se realiza biomarcadores en el mismo centro histologico  
+Tipo de cirugia 
+Complicacion_NLR_diagostico por clinica_laringoscopia 
+Complicacion_descripcion 
+Valor de tiroglobulina UI/mL 
+¿El/la paciente recibió tratamiento con radioiodo? 
+Tratamiento Inicial_Cirugia_Ablacion_Vigilancia 
+¿Deséa excluir en esta fase el estudio?, 
+Desee excluir en esta fase del estudio (describa el por que)  
+Complete_Incomplete_unverified 
+Incomplete_unverified_complete 

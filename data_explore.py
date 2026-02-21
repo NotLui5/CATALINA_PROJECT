@@ -226,6 +226,17 @@ col_order1  = list(df_ord.columns) ############
 col_order2  = list(df_ord2.columns) ############
 col_order3 = col_order1 + col_order2  
 col_order = [col for col in col_order3 if col in transposed_df.columns]
+df_ord_def = pd.read_excel("./gold_order/Total 2.xlsx") ############
+# col_order = [col for col in df_ord_def if col in transposed_df.columns]
+col_order = [col for col in transposed_df.columns if col not in df_ord_def.columns]
+with open("./data_extracted/var_no_included.txt", "w", encoding="utf-8") as file:
+    for col in col_order:
+        file.write(f"{col} \n")
+
+# var_order = [col for col in df_ord_def if col not in transposed_df.columns]
+# with open("./data_extracted/var_no_included.txt", "w", encoding="utf-8") as file:
+#     for col in var_order:
+#         file.write(f"{col} \n")
 transposed_df = transposed_df[col_order]
 # transposed_df = transposed_df[col_order + extra_cols] ############
 
@@ -244,12 +255,12 @@ def export_to_excel_with_sheets(basedf, hospitals_code, output_file="./data_extr
                 index=False
             )
                         
-            summary_df = filtered_df.describe(include='all')
-            summary_df.to_excel(
-                writer, 
-                sheet_name=f"{hospital_name}_stats", 
-                index=True
-            )
+#             summary_df = filtered_df.describe(include='all')
+#             summary_df.to_excel(
+#                 writer, 
+#                 sheet_name=f"{hospital_name}_stats", 
+#                 index=True
+#             )
 
 
-export_to_excel_with_sheets(transposed_df, hospitals_code)
+# export_to_excel_with_sheets(transposed_df, hospitals_code)
