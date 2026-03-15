@@ -22,6 +22,245 @@ data_base3 = pd.read_excel("./database/AMBATO_Base_limpia_3.xlsx")
 data_base2["ATA2025LAST_ULTIMA_CONSULTA"] = data_base2["ATA2015_ULTIMA_CONSULTA"]#We won't use ata2015, but HEEE didn't reported it so, we taked 2025 in all bases except HEEE (is for concatenate level)
 data_base2.rename(columns = {'BMI ': 'BMI', "ID": "record_id"}, inplace=True)
 
+### Column name normalization
+def normalize_columns(df):
+    df = df.copy()
+    df.columns = (
+        df.columns
+        .str.strip()                 
+        .str.replace(r"\s+", " ", regex=True)
+        .str.upper()                 
+    )
+    return df
+
+
+databases = {
+    "BASE 1": data_base1,
+    "BASE 2": data_base2,
+    "BASE 3": data_base3
+}
+
+
+for name, df in databases.items():
+    databases[name] = normalize_columns(df)
+
+
+### Database structure validation
+from typing import Tuple, List, Dict
+
+
+def validate_database(df: pd.DataFrame, db_name: str) -> Tuple[bool, Dict[str, List]]:
+    """
+    Validates database structure, data types, and clinical codifications.
+
+    Args:
+        df: DataFrame to validate
+        db_name: Database name (for logging)
+
+    Returns:
+        success (bool), errors (dict)
+    """
+
+    REQUIRED_COLUMNS = [
+        'RECORD_ID', 'SEX', 'AGEATDIGNOSIS', 'RADIOTHERAPY EXPOSURE',
+        'FAMILY HISTORY OF THYROID CANCER', 'THYROID DISEASE PREOP', 'BMI',
+        'THYROIDECTOMY APPROACH', 'TYPEOFRESECTION', 'HISTOLOGY',
+        'PAPILLARYSUBTYPE', 'FOLLICULARSUBTYPE', 'TUMORSIZE (CM)',
+        'EXTRATHYROIDALEXTENSION', 'MULTICENTRIC', 'MULTICENTER_BILATERAL',
+        'VASCULARINVASION', 'PERINEURALINVASION', 'POSITIVELYMPHNODEN1',
+        'NUMBEROFLYMPHNODEEXCISION', 'NUMBEROFPOSITIVELYMPHNODEEXCISION',
+        'LN RATIO', 'SIZEOFPOSITIVELYMPHNODE(CM)', 'EXTRANODALEXTENSION',
+        'HASHIMOTO THYROIDITIS', 'TNMT', 'TNMN', 'TNMM', 'STAGE', 'MUTATION',
+        'ATA_2015_RISCO_INICIAL', 'ATA_2025_RISCO_INICIAL', 'TSH POST OP',
+        'TG POST OP', 'ANTI TG POST OP (POSITIVE OR NEGATIVE)',
+        'ANTI TG POST OP VALUE', 'RAI', 'RAIDOSE', 'TSH PRE RAI',
+        'TG PRE RAI', 'ANTI TG PRE RAI (POSITIVE OR NEGATIVE)',
+        'ANTI TG PRE RAI', 'OUTCOMEFOLLOWUP_MONTHSPOSTSURGERY',
+        'TSH FOLLOW UP', 'TG FOLLOW UP',
+        'ANTI TG FOLLOW UP (POSITIVE OR NEGATIVE)', 'ANTI TG FOLLOW UP',
+        'ATA2015_ULTIMA_CONSULTA', 'ATA2025LAST_ULTIMA_CONSULTA'
+    ]
+
+    
+    EXPECTED_TYPES = {
+        'RECORD_ID': 'numeric',
+        'AGEATDIGNOSIS': 'numeric',
+        'BMI': 'numeric',
+        'TUMORSIZE (CM)': 'numeric',
+        'OUTCOMEFOLLOWUP_MONTHSPOSTSURGERY': 'numeric',
+        'TG POST OP': 'numeric',
+        'ANTI TG POST OP VALUE': 'numeric',
+        'RAIDOSE': 'numeric',
+        'TSH PRE RAI': 'numeric',
+        'TG PRE RAI': 'numeric',
+        'ANTI TG PRE RAI': 'numeric',
+        'TG FOLLOW UP': 'numeric',
+        'ANTI TG FOLLOW UP': 'numeric',
+
+        # coded clinical variables
+        'SEX': 'coded',
+        'RADIOTHERAPY EXPOSURE': 'coded',
+        'FAMILY HISTORY OF THYROID CANCER': 'coded',
+        'THYROID DISEASE PREOP': 'coded',
+        'THYROIDECTOMY APPROACH': 'coded',
+        'TYPEOFRESECTION': 'coded',
+        'HISTOLOGY': 'coded',
+        'PAPILLARYSUBTYPE': 'coded',
+        'FOLLICULARSUBTYPE': 'coded',
+        'EXTRATHYROIDALEXTENSION': 'coded',
+        'MULTICENTRIC': 'coded',
+        'MULTICENTER_BILATERAL': 'coded',
+        'VASCULARINVASION': 'coded',
+        'PERINEURALINVASION': 'coded',
+        'POSITIVELYMPHNODEN1': 'coded',
+        'EXTRANODALEXTENSION': 'coded',
+        'HASHIMOTO THYROIDITIS': 'coded',
+        'TNMT': 'coded',
+        'TNMN': 'coded',
+        'TNMM': 'coded',
+        'STAGE': 'coded',
+        'MUTATION': 'coded',
+        'ATA_2015_RISCO_INICIAL': 'coded',
+        'ATA_2025_RISCO_INICIAL': 'coded',
+        'RAI': 'coded',
+        'ANTI TG POST OP (POSITIVE OR NEGATIVE)': 'coded',
+        'ANTI TG PRE RAI (POSITIVE OR NEGATIVE)': 'coded',
+        'ANTI TG FOLLOW UP (POSITIVE OR NEGATIVE)': 'coded',
+        'ATA2015_ULTIMA_CONSULTA': 'coded',
+        'ATA2025LAST_ULTIMA_CONSULTA': 'coded'
+    }
+
+    VALID_CODIFICATIONS = {
+    'SEX': {1: 'Femenino', 2: 'Masculino'},
+    'RADIOTHERAPY EXPOSURE': {1: 'Si', 2: 'No'},
+    'FAMILY HISTORY OF THYROID CANCER': {1: 'Si', 2: 'No'},
+    'THYROID DISEASE PREOP': {
+        1: 'Euthyroidism', 2: 'Hypothyroidism', 3: 'Hyperthyroidism'
+    },
+    'THYROIDECTOMY APPROACH': {1: 'Total', 2: 'Total + linfadenectomia'},
+    'TYPEOFRESECTION': {1: 'R0', 2: 'R1', 3: 'R2'},
+    'HISTOLOGY': {1: 'Papilar', 2: 'Folicular', 3: 'Celulas de Hurtle'},
+    'PAPILLARYSUBTYPE': {
+        1: 'Clasico', 3: 'Variante folicular', 4: 'Encapsulado',
+        5: 'Esclerosante difusa', 6: 'Células altas',
+        7: 'Células colunares', 8: 'Cribiforme-morular',
+        9: 'Hobnail', 10: 'Warthin-like', 11: 'Oncocítico',
+        12: 'Trabecular/Sólido', 13: 'Clasica y Folicular',
+        14: 'Folicular y oncocitica'
+    },
+    'FOLLICULARSUBTYPE': {
+        1: 'Minimamente invasivo',
+        2: 'Encapsulado invasivo',
+        3: 'Amplamente invasivo'
+    },
+    'EXTRATHYROIDALEXTENSION': {
+        1: 'Ausente', 2: 'Microscópica', 3: 'Macroscópica'
+    },
+    'MULTICENTRIC': {1: 'Si', 2: 'No'},
+    'MULTICENTER_BILATERAL': {1: 'Si', 2: 'No'},
+    'VASCULARINVASION': {1: 'Si', 2: 'No'},
+    'PERINEURALINVASION': {1: 'Si', 2: 'No'},
+    'POSITIVELYMPHNODEN1': {1: 'Si', 2: 'No'},
+    'EXTRANODALEXTENSION': {1: 'Si', 2: 'No'},
+    'HASHIMOTO THYROIDITIS': {1: 'Si', 2: 'No'},
+    'TNMT': {0: 'Tx', 1: 'T1', 2: 'T2', 3: 'T3', 4: 'T4'},
+    'TNMN': {0: 'N0', 1: 'N1a', 2: 'N1b', 3: 'Nx'},
+    'TNMM': {1: 'M0', 2: 'M1'},
+    'STAGE': {1: 'I', 2: 'II', 3: 'III', 4: 'IV'},
+    'MUTATION': {0: 'No', 1: 'BRAF', 2: 'NRAS'},
+    'ATA_2015_RISCO_INICIAL': {1: 'Bajo', 2: 'Intermedio', 3: 'Alto'},
+    'ATA_2025_RISCO_INICIAL': {
+        1: 'Bajo', 2: 'Intermedio Bajo',
+        3: 'Intermedio Alto', 4: 'Alto'
+    },
+    'ANTI TG POST OP (POSITIVE OR NEGATIVE)': {1: 'Positivo', 2: 'Negativo'},
+    'RAI': {1: 'Si', 2: 'No'},
+    'ANTI TG PRE RAI (POSITIVE OR NEGATIVE)': {1: 'Positivo', 2: 'Negativo'},
+    'ANTI TG FOLLOW UP (POSITIVE OR NEGATIVE)': {1: 'Positivo', 2: 'Negativo'},
+    'ATA2015_ULTIMA_CONSULTA': {
+        1: 'Respuesta Excelente',
+        2: 'Respuesta Indeterminada',
+        3: 'Respuesta Bioquímica Incompleta',
+        4: 'Estrutural Incompleta'
+    },
+    'ATA2025LAST_ULTIMA_CONSULTA': {
+        1: 'Respuesta Excelente',
+        2: 'Respuesta Indeterminada',
+        3: 'Respuesta Bioquímica Incompleta',
+        4: 'Estrutural Incompleta'
+    }
+    }
+    
+    ### VALIDATION
+
+    errors = {'columns': [], 'types': [], 'codification': []}
+
+    # 1. Structure
+    missing = set(REQUIRED_COLUMNS) - set(df.columns)
+    if missing:
+        errors['columns'] = list(missing)
+        #return False, errors
+
+    # 2. Logical type validation
+    for col, expected in EXPECTED_TYPES.items():
+        if col not in df.columns:
+            continue
+        numeric = pd.to_numeric(df[col], errors='coerce')
+        
+        if expected == 'numeric':
+            if numeric.notna().sum() == 0:
+                errors['types'].append({
+                'column': col,
+                'expected': 'numeric',
+                'actual': str(df[col].dtype)
+            })
+        
+        elif expected == 'coded':
+            if numeric.notna().sum() == 0:
+                errors['types'].append({
+                    'column': col,
+                    'expected': 'coded (numeric codes)',
+                    'actual': str(df[col].dtype)
+                    })
+
+    # 3. Codification validation
+    for col, mapping in VALID_CODIFICATIONS.items():
+        if col not in df.columns:
+            continue
+        
+        numeric_values = pd.to_numeric(df[col], errors='coerce')
+        present_values = numeric_values.dropna().unique()
+        invalid = [v for v in present_values if v not in mapping.keys()]
+        
+        if invalid:
+            errors['codification'].append({
+            'column': col,
+            'invalid_values': invalid,
+            'allowed_codes': list(mapping.keys())
+        })
+
+    success = all(len(v) == 0 for v in errors.values())
+    return success, errors
+
+### Validation execution
+for name, df in databases.items():
+    print(f"\n{name} COLUMNS:")
+    for col in df.columns:
+        print(col)
+
+for name, df in databases.items():
+    success, errors = validate_database(df, name)
+    print(f"{name}: {'PASS' if success else 'FAIL'}")
+
+for name, df in databases.items():
+    success, errors = validate_database(df, name)
+    
+    if not success:
+        print(f"\n{name} FAILED:")
+        print(errors)
+        #raise ValueError(f"Database {name} did not pass validation. Fix data before continuing.")
+
+
 ### Join just one database:
 data_base = pd.concat([data_base1, data_base2], ignore_index=True, names= list(data_base1.columns), verify_integrity=True, sort = False)
 path_base = "./database/HEE_Brazil_Ambato.xlsx"

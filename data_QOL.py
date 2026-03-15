@@ -48,7 +48,7 @@ def get_yellow_rows(file_path, sheet_name=None):
         app.quit()
 
 # Extraer datos del Excel
-celdas_amarillas = get_yellow_rows('code_book/code_book/Libro de codigos_actualizado.xlsx.xlsx')
+celdas_amarillas = get_yellow_rows('code_book/Libro de codigos_actualizado.xlsx')
 xyr = pd.DataFrame(celdas_amarillas)
 print(f"Shape del DataFrame de filas amarillas: {xyr.shape}")
 
@@ -78,16 +78,31 @@ print(f"\n=== TOTAL DE VARIABLES REDCAP ENCONTRADAS: {len(redcap_field_names)} =
 print("Primeras 20 variables:", redcap_field_names[:20])
 
 # Crear mapping SOLO de nombres REDCap a etiquetas (para renombrar después)
+# Crear mapping correcto: usar columna 2 SOLO si tiene texto real
 name_mapping = {}
+
 for row in celdas_amarillas:
-    if len(row) >= 2:
+    if len(row) >= 1:
         redcap_name = str(row[0]).replace("[", "").replace("]", "").strip()
-        if len(row) > 1 and row[1] and redcap_name:
-            label = str(row[1]).strip()
-            # Solo mapear si el nombre REDCap es válido
-            if re.match(r'^[a-zA-Z0-9_]+$', redcap_name):
-                name_mapping[redcap_name] = label
-                print(f"Mapping: {redcap_name} -> {label}")
+
+        # Segunda columna (puede no existir)
+        second_col = ""
+        if len(row) >= 2:
+            second_col = str(row[1]).strip()
+
+        # Limpiar falsos vacíos
+        if second_col.lower() == "nan":
+            second_col = ""
+
+        # Decidir nombre final
+        if second_col != "":
+            final_name = second_col
+        else:
+            final_name = redcap_name
+
+        # Validar nombre REDCap
+        if re.match(r'^[a-zA-Z0-9_]+$', redcap_name):
+            name_mapping[redcap_name] = final_name
 
 headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
@@ -150,7 +165,7 @@ data_export = {
     'type': 'eav',
     'csvDelimiter': '',
     'rawOrLabel': 'label',
-    'rawOrLabelHeaders': 'label',
+    'rawOrLabelHeaders': 'raw',
     'exportCheckboxLabel': 'false',
     'exportSurveyFields': 'false',
     'exportDataAccessGroups': 'false',
@@ -163,7 +178,7 @@ forms_list = [
     'formulario_1_caratersticas_base',
     'formulario_2a_post_tiroidectomia',
     'formulario_2b',
-    'formulario_2c',
+    #'formulario_2c',
     'formulario_3_seguimiento'
 ]
 
@@ -215,16 +230,21 @@ try:
             else:
                 print(f"❌ Variable datodem04 NO encontrada en los datos")
             
-            # Renombrar columnas según el mapping
+            # Renombrar columnas usando el libro de códigos (SEGUNDA COLUMNA)
             columns_to_rename = {}
+
             for col in transposed_df.columns:
-                if col in name_mapping:
-                    columns_to_rename[col] = name_mapping[col]
+                clean_col = col.strip()
+                if clean_col in name_mapping:
+                    columns_to_rename[col] = name_mapping[clean_col]
+
+            transposed_df = transposed_df.rename(columns=columns_to_rename)
             
             if columns_to_rename:
                 transposed_df = transposed_df.rename(columns=columns_to_rename)
                 print(f"Renombradas {len(columns_to_rename)} columnas")
             
+            print(transposed_df.columns.tolist()[:20])
             print(f"\n=== COLUMNAS FINALES EN DATAFRAME: {len(transposed_df.columns)} ===")
             
             # Verificar si AGE_AT_DIAGNOSIS está después del renombrado
@@ -253,8 +273,8 @@ try:
                 """
                 with pd.ExcelWriter(output_file, engine='openpyxl') as writer:
                     for hospital_name, prefix in hospitals_code.items():
-                        if 'codigo_id' in basedf.columns:
-                            filtered_df = basedf[basedf['codigo_id'].str.startswith(prefix, na=False)]
+                        if 'CODIGO ID' in basedf.columns:
+                            filtered_df = basedf[basedf['CODIGO ID'].str.startswith(prefix, na=False)]
                             
                             if not filtered_df.empty:
                                 # Hoja de datos del hospital
