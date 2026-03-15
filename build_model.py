@@ -1,5 +1,8 @@
+# https://github.com/kartik2433/Code_Unnati_Marathon/blob/main/server/model/Heart%20Pediction.ipynb
+# https://github.com/Navjotkhatri/CARDIOVASCULAR-RISK-PREDICTION/blob/main/Cardiovascular_Risk_Prediction.ipynb
+# https://github.com/Preetirai-tech/Cardiovascular-Risk-Prediction/blob/main/Cardiovascular_Risk_Prediction.ipynb
 ###########################################################################
-### PRE-PROCESSING
+### DATASET LOADING
 ###########################################################################
 
 import pandas as pd
@@ -14,20 +17,51 @@ os.makedirs("./results", exist_ok=True)
 os.makedirs("./models_comparison", exist_ok=True)
 os.makedirs("./distribution", exist_ok=True)
 
-### Import data TRAIN
-data_base1 = pd.read_excel("./database/Base_pos_limpeza_V9_with Record ID.xlsx")
-data_base2 = pd.read_excel("./database/HEE_limpia 6.xlsx")
-data_base3 = pd.read_excel("./database/AMBATO_Base_limpia_3.xlsx")
-
-data_base2["ATA2025LAST_ULTIMA_CONSULTA"] = data_base2["ATA2015_ULTIMA_CONSULTA"]#We won't use ata2015, but HEEE didn't reported it so, we taked 2025 in all bases except HEEE (is for concatenate level)
-data_base2.rename(columns = {'BMI ': 'BMI', "ID": "record_id"}, inplace=True)
-
-### Join just one database:
-data_base = pd.concat([data_base1, data_base2], ignore_index=True, names= list(data_base1.columns), verify_integrity=True, sort = False)
-path_base = "./database/HEE_Brazil_Ambato.xlsx"
+### Import data 
+path_base = "./database/hee_brazil_ambato_base.xlsx"
 if not os.path.exists(path_base):
-    data_base.to_excel("./database/HEE_and_Brazil.xlsx", index=False)
+    data_base1 = pd.read_excel("./database/Base_pos_limpeza_V9_with Record ID.xlsx")
+    data_base2 = pd.read_excel("./database/HEE_limpia 6.xlsx")
+    data_base3 = pd.read_excel("./database/AMBATO_Base_limpia_3.xlsx")
 
+    ##!!! We won't use ata2015, but HEEE and AMBATO bases didn't reported ATA2025.
+    data_base2["ATA2025LAST_ULTIMA_CONSULTA"] = data_base2["ATA2015_ULTIMA_CONSULTA"]
+
+    ##! Diferent colnames
+    # for x in data_base1.columns:
+    #     if x not in data_base3.columns:
+    #         print(x)
+    data_base2.rename(columns={"ID": "record_id", "BMI ": "BMI"}, inplace=True)
+    data_base3.rename(columns={"TNMT ": "TNMT"}, inplace=True)
+    if not data_base1.columns.equals(data_base2.columns):
+        print("Check colnames database1 and 2")
+    if not data_base2.columns.equals(data_base3.columns):
+        print("Check colnames database2 and 3")
+        
+    ### Join just one database:
+    df = pd.concat([data_base1, data_base2, data_base3], ignore_index=True, 
+                names= list(data_base1.columns), verify_integrity=True, 
+                sort = False)
+    df.to_excel(path_base, index=False)
+
+else:
+    df = pd.read_excel(path_base)
+
+### Dataset first View 
+df.head() #.tail
+
+### Dataset Rows & Columns count
+df.shape
+
+### Dataset information
+df.info()
+
+### Dataset Describe 
+df.describe(include = "all")
+for i in df.columns.tolist():
+  print("No. of unique values in ", i , "is" , df[i].nunique(), ".")
+  
+##### Data wrangling
 # THYROIDECTOMY APPROACH, QUE SIGNIFICA 3? SOLO HAY 1 Y 2 EN EL LIBRO DE CODIGOS
 # TNMM, QUE SIGNIFICA 3? SOLO HAY 1 Y 2 EN EL LIBRO DE CODIGOS
 # ANTI TG FOLLOW UP (POSITIVE or NEGATIVE), QUE SIGNIFICA 2.38? SOLO HAY 1 Y 2 EN EL LIBRO DE CODIGOS
@@ -36,52 +70,77 @@ if not os.path.exists(path_base):
 # ANTI TG FOLLOW UP (POSITIVE or NEGATIVE), QUE SIGNIFICA 3? SOLO HAY 1 Y 2 EN EL LIBRO DE CODIGOS
 
 ## Fix col values
-# d1 = pd.get_dummies(data_base, drop_first=True,) # If all were like yes/not 
-from sklearn.preprocessing import OrdinalEncoder
-d1 = data_base.copy()
-
-d1['SEX'] = d1['SEX'].replace({'Female': 1, 'Male': 2, 
-                               '1': 1, '2': 2})
-d1['TYPEOFRESECTION'] = d1['TYPEOFRESECTION'].replace({'R0': 1, 'R1': 2, 'R2': 3,
-                                                       '1': 1, '2': 2, '3': 3})
-print("SEX and TYPEOFRESECTION transformed to ordinal encoder")
-
-d1['RECURRENCE'] = d1['ATA2025LAST_ULTIMA_CONSULTA'].replace([1,2,3],0).replace(4, 1)
+sex_map = {'Female': 1,
+           'Male': 2}
+typeresection_map = {'R0': 1, 
+                     'R1': 2, 
+                     'R2': 3}
+recurrence_map = {[1,2,3]:0,
+                  4: 1}
+df['SEX'] = df['SEX'].replace(sex_map)
+df['TYPEOFRESECTION'] = df['TYPEOFRESECTION'].replace(typeresection_map)
+df['RECURRENCE'] = df['ATA2025LAST_ULTIMA_CONSULTA'].replace([1,2,3],0).replace(4, 1)
 idx= 0
+categorical_variable = []
+continuous_variable = []
 
-for col in d1.columns:
-    # sns.countplot(data=d1, x=col)
-    if d1[col].dtype == 'object':
-        # d1[col]
-        d1[col] = pd.to_numeric(d1[col], errors='coerce')
+for i in df.columns:
+    if i in ['record_id', "PAPILLARY SUBTYPE"]:
+        if i == "PAPILLARY SUBTYPE":
+            categorical_variable.append(i)
+        pass
+    elif df[i].nunique() <6: ### PAPILLARY SUBTYPE nunique=14
+        categorical_variable.append(i)
+    elif df[i].nunique() >= 6:
+        continuous_variable.append(i)
+
+print(categorical_variable)
+print(continuous_variable)
+
+### Duplicate Values 
+len(df[df.duplicated()])
+
+### NaN Values 
+print('Missing Data Count')
+df.isna().sum()[df.isna().sum() > 0].sort_values(ascending=False) # / data_base.shape[0] # percentage
+
+print('Missing Data Percentage')
+print(round(df.isna().sum()[df.isna().sum()>0].sort_values(ascending=False)/len(df)*100,2))
+
+
+for col in df.columns:
+    # sns.countplot(data=df, x=col)
+    if df[col].dtype == 'object':
+        # df[col]
+        df[col] = pd.to_numeric(df[col], errors='coerce')
            
     path_dens = f"./distribution/dens_{col}.png"
     path_count = f"./distribution/freq_{col}.png"
     if not os.path.exists(path_dens): 
-        sns.histplot(data=d1, x=col, hue="RECURRENCE", multiple="dodge", shrink=.8)
+        sns.histplot(data=df, x=col, hue="RECURRENCE", multiple="dodge", shrink=.8)
         plt.title(f'Distribution of {col}')
         plt.legend(prop={'size': 10})
         plt.savefig(path_dens)
         plt.show(block=True)
         
-        sns.histplot(data=d1, x=col, hue="RECURRENCE", stat="density", multiple="dodge", shrink=.8)
+        sns.histplot(data=df, x=col, hue="RECURRENCE", stat="density", multiple="dodge", shrink=.8)
         plt.title(f'Distribution of {col}')
         plt.legend(prop={'size': 10})
         plt.savefig(path_count)
         plt.show(block=True)
         
-    print(f"type of cols transformed to {d1[col].dtype}")
+    print(f"type of cols transformed to {df[col].dtype}")
 
-path_dis = "./distribution/d1_distributions.png"
+path_dis = "./distribution/df_distributions.png"
 if not os.path.exists(path_dis):
-    sns.pairplot(d1, hue="RECURRENCE")
+    sns.pairplot(df, hue="RECURRENCE")
     plt.savefig(path_dis)
 ### Organize NA values
 # combine follicular subtype with papillar subtype, so to this we change value follicular with the following number of pappillary en after combine them in one col
-d1["FOLLICULARSUBTYPE"] = d1["FOLLICULARSUBTYPE"].replace({1: 15, 2: 16, 3: 17})
-d1['SUBTYPE_FOLLI_PAPIL'] = d1['FOLLICULARSUBTYPE'].combine_first(d1['PAPILLARYSUBTYPE'])
+df["FOLLICULARSUBTYPE"] = df["FOLLICULARSUBTYPE"].replace({1: 15, 2: 16, 3: 17})
+df['SUBTYPE_FOLLI_PAPIL'] = df['FOLLICULARSUBTYPE'].combine_first(df['PAPILLARYSUBTYPE'])
 print("New SUBTYPE_FOLLI_PAPIL col from FOLLICULARSUBTYPE _ and _ PAPILLARYSUBTYPE cols")
-d1.isna().sum() /777 * 100
+df.isna().sum() /777 * 100
 # fillna = 0 porque no era neesario que se reporte ese valor
 col_fill_na = [
     "NUMBEROFLYMPHNODEEXCISION",
@@ -95,9 +154,9 @@ col_fill_na = [
     "ANTI TG PRE RAI "
 ]
 for col in col_fill_na:
-    if col in d1.columns:
-        d1[col] = d1[col].fillna(0)
-    # d1[col_fill_na] = d1[col_fill_na].fillna(0)
+    if col in df.columns:
+        df[col] = df[col].fillna(0)
+    # df[col_fill_na] = df[col_fill_na].fillna(0)
     print(f"Na values in {col} filled with 0")
 
 # Remove variables innecesary:
@@ -116,16 +175,16 @@ cols_remove = [
     "ANTI TG POST OP VALUE",
     "TNMN", "TNMM", "STAGE" #AUTHOR (PS) decision!!!
     ]
-d1 = d1.drop(cols_remove, axis=1) # Remove col innecesary
+df = df.drop(cols_remove, axis=1) # Remove col innecesary
 print(f"columns: {cols_remove} were removed")
-# d1.isna().sum() /777 * 100
+# df.isna().sum() /777 * 100
 
 # Sperman Correlation and LASSO to select best variables
 from sklearn.model_selection import train_test_split
 ##### 80/10/10 train/dev/test
 
-X = d1.drop('RECURRENCE', axis=1)
-y = d1['RECURRENCE']  # outcome variable
+X = df.drop('RECURRENCE', axis=1)
+y = df['RECURRENCE']  # outcome variable
 X_train, X_dev, y_train, y_dev = train_test_split(X, y, test_size=0.2,stratify=y, random_state=0)
 X_dev, X_test, y_dev, y_test = train_test_split(X_dev, y_dev, test_size=0.5,stratify=y_dev, random_state=0)
 print(f"\nDistribución de clases:")
