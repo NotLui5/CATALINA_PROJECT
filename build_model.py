@@ -18,14 +18,17 @@ os.makedirs("./models_comparison", exist_ok=True)
 os.makedirs("./distribution", exist_ok=True)
 
 ### Import data 
-path_base = "./database/hee_brazil_ambato_base.xlsx"
+path_base = "./database/hee_brazil_ambato_base.csv"
 if not os.path.exists(path_base):
-    data_base1 = pd.read_excel("./database/Base_pos_limpeza_V9_with Record ID.xlsx")
-    data_base2 = pd.read_excel("./database/HEE_limpia 6.xlsx")
-    data_base3 = pd.read_excel("./database/AMBATO_Base_limpia_3.xlsx")
+    data_base1 = pd.read_csv("./database/Base_pos_limpeza_V9_with Record ID.csv", sep = ";", encoding='utf-8-sig')
+    data_base2 = pd.read_csv("./database/HEE_limpia 6.csv", sep = ";", encoding='utf-8-sig')
+    data_base3 = pd.read_csv("./database/AMBATO_Base_limpia_3.csv", sep = ";")
 
+    data_base1["RAI"].replace("0,00", 2, inplace=True) 
+    
     ##!!! We won't use ata2015, but HEEE and AMBATO bases didn't reported ATA2025.
     data_base2["ATA2025LAST_ULTIMA_CONSULTA"] = data_base2["ATA2015_ULTIMA_CONSULTA"]
+    data_base3["ATA2025LAST_ULTIMA_CONSULTA"] = data_base3["ATA2015_ULTIMA_CONSULTA"]
 
     ##! Diferent colnames
     # for x in data_base1.columns:
@@ -42,10 +45,79 @@ if not os.path.exists(path_base):
     df = pd.concat([data_base1, data_base2, data_base3], ignore_index=True, 
                 names= list(data_base1.columns), verify_integrity=True, 
                 sort = False)
-    df.to_excel(path_base, index=False)
+    
+    ## Create RECURRENCE outcome variable by ATA.
+    df['RECURRENCE'] = df['ATA2025LAST_ULTIMA_CONSULTA']
+
+    ##### Data wrangling
+    # THYROIDECTOMY APPROACH, QUE SIGNIFICA 3? SOLO HAY 1 Y 2 EN EL LIBRO DE CODIGOS
+    df["THYROIDECTOMY APPROACH"]
+    # ANTI TG FOLLOW UP (POSITIVE or NEGATIVE), QUE SIGNIFICA 2.38? SOLO HAY 1 Y 2 EN EL LIBRO DE CODIGOS
+    # BRAZIL
+
+    ## Fix col values
+    sex_map = {'Female': 1,
+            'Male': 2}
+    typeresection_map = {'R0': 1, 
+                        'R1': 2, 
+                        'R2': 3}
+    thy_map = {3: 1} # TNMM 3 is unknown so it will be 1, and THYROIDECTOMY APPROACH 3 is updated so it will be 1, explained by PS
+    
+    df['SEX'] = df['SEX'].replace(sex_map) 
+    df['TYPEOFRESECTION'] = df['TYPEOFRESECTION'].replace(typeresection_map)
+    df["TNMM"] = df["TNMM"].replace(thy_map)
+    df["THYROIDECTOMY APPROACH"] = df["THYROIDECTOMY APPROACH"].replace(thy_map)
+        
+    # Recode 'Follicular' values to avoid corresponding 'Papillary' numeric code and merge both into a single column
+    df["FOLLICULARSUBTYPE"] = df["FOLLICULARSUBTYPE"].replace({1: 15, 2: 16, 3: 17})
+    df['SUBTYPE_FOLLI_PAPIL'] = df['FOLLICULARSUBTYPE'].combine_first(df['PAPILLARYSUBTYPE'])
+    
+    # Remove variables innecesary:
+    cols_remove = [
+        "record_id", 
+        "ATA2015_ULTIMA_CONSULTA", 
+        "ATA2025LAST_ULTIMA_CONSULTA", 
+        # "ATA_2025_RISCO_INICIAL", # COMPARATIVO
+        # "ATA_2015_RISCO_INICIAL", # COMPARATIVO
+        "PAPILLARYSUBTYPE", #it's merged in SUBTYPE_FOLLI_PAPIL
+        "FOLLICULARSUBTYPE", #it's merged in SUBTYPE_FOLLI_PAPIL
+        "MUTATION", 
+        "TSH POST OP ", 
+        "TG POST OP", 
+        "ANTI TG POST OP (POSITIVE or NEGATIVE)", 
+        "ANTI TG POST OP VALUE",
+        
+        ]
+    df = df.drop(cols_remove, axis=1) # Remove col innecesary
+    
+    categorical_variable = []
+    continuous_variable = []
+
+    for i in df.columns:
+        if i in ['record_id', "SUBTYPE_FOLLI_PAPIL"]:
+            if i == "SUBTYPE_FOLLI_PAPIL":
+                categorical_variable.append(i)
+            pass
+        elif df[i].nunique() <6: ### PAPILLARY SUBTYPE nunique=14
+            categorical_variable.append(i)
+        elif df[i].nunique() >= 6:
+            continuous_variable.append(i)
+
+    for i in df.columns:
+        df[i] = df[i].astype(str).str.replace(',', '.', regex=False)
+        if i in continuous_variable:
+            df[i] = pd.to_numeric(df[i], errors='coerce')
+        else:
+            df[i] = pd.to_numeric(df[i], errors='coerce').astype("Int64")            
+    
+    df['RECURRENCE'] = df['RECURRENCE'].replace([1,2,3],0).replace(4, 1)
+    
+    #Data final to start imputation and modeling
+    df.to_csv(path_base, index=False)
 
 else:
-    df = pd.read_excel(path_base)
+    #Data final to start imputation and modeling
+    df = pd.read_csv(path_base)
 
 ### Dataset first View 
 df.head() #.tail
@@ -58,56 +130,53 @@ df.info()
 
 ### Dataset Describe 
 df.describe(include = "all")
-for i in df.columns.tolist():
-  print("No. of unique values in ", i , "is" , df[i].nunique(), ".")
-  
-##### Data wrangling
-# THYROIDECTOMY APPROACH, QUE SIGNIFICA 3? SOLO HAY 1 Y 2 EN EL LIBRO DE CODIGOS
-# TNMM, QUE SIGNIFICA 3? SOLO HAY 1 Y 2 EN EL LIBRO DE CODIGOS
-# ANTI TG FOLLOW UP (POSITIVE or NEGATIVE), QUE SIGNIFICA 2.38? SOLO HAY 1 Y 2 EN EL LIBRO DE CODIGOS
-# BRAZIL
-# RAI QUE SIGNIFICA 0, PORQUE EL LIBRO DE COD HAY 1 Y 2 NO 0 Y 1 COMO AQUI
-# ANTI TG FOLLOW UP (POSITIVE or NEGATIVE), QUE SIGNIFICA 3? SOLO HAY 1 Y 2 EN EL LIBRO DE CODIGOS
-
-## Fix col values
-sex_map = {'Female': 1,
-           'Male': 2}
-typeresection_map = {'R0': 1, 
-                     'R1': 2, 
-                     'R2': 3}
-recurrence_map = {[1,2,3]:0,
-                  4: 1}
-df['SEX'] = df['SEX'].replace(sex_map)
-df['TYPEOFRESECTION'] = df['TYPEOFRESECTION'].replace(typeresection_map)
-df['RECURRENCE'] = df['ATA2025LAST_ULTIMA_CONSULTA'].replace([1,2,3],0).replace(4, 1)
-idx= 0
-categorical_variable = []
-continuous_variable = []
-
 for i in df.columns:
-    if i in ['record_id', "PAPILLARY SUBTYPE"]:
-        if i == "PAPILLARY SUBTYPE":
-            categorical_variable.append(i)
-        pass
-    elif df[i].nunique() <6: ### PAPILLARY SUBTYPE nunique=14
-        categorical_variable.append(i)
-    elif df[i].nunique() >= 6:
-        continuous_variable.append(i)
-
-print(categorical_variable)
-print(continuous_variable)
+    print("No. of unique values in", i , "is" , df[i].nunique())
 
 ### Duplicate Values 
 len(df[df.duplicated()])
 
 ### NaN Values 
-print('Missing Data Count')
-df.isna().sum()[df.isna().sum() > 0].sort_values(ascending=False) # / data_base.shape[0] # percentage
+print('Missing Data')
+cero_nodes = ["POSITIVELYMPHNODEN1", "NUMBEROFPOSITIVELYMPHNODEEXCISION", "LN RATIO", "SIZEOFPOSITIVELYMPHNODE(cm)", "NUMBEROFLYMPHNODEEXCISION"]
+df.loc[df["NUMBEROFLYMPHNODEEXCISION"] == 0, cero_nodes] = 0
+# If we impute to 0 these will be the lowest value between another high values. So it will be imputed then by mean or median.
+# cero_rai = ["TSH PRE RAI", "TG PRE RAI", "ANTI TG PRE RAI"] 
+# df.loc[df["RAI"] == 2, "ANTI TG PRE RAI (POSITIVE or NEGATIVE)"] = 0
 
-print('Missing Data Percentage')
-print(round(df.isna().sum()[df.isna().sum()>0].sort_values(ascending=False)/len(df)*100,2))
+total = df.isnull().sum().sort_values(ascending=False)
+percent_total = (df.isnull().sum()/len(df)).sort_values(ascending=False)*100
+missing = pd.concat([total, round(percent_total, 2)], axis=1, keys=['Total', 'Percent'])
+missing = missing[missing['Total']>0]
+missing
+
+nan_columns_list = missing.index.tolist()
+
+plt.figure(figsize=(30,5))
+df[nan_columns_list].boxplot()
+
+colors = sns.color_palette("rocket", len(nan_columns_list))
 
 
+fig, axes = plt.subplots(nrows=2, ncols=4, figsize=(10, 8))
+
+
+axes = axes.flatten()
+
+
+for i, column in enumerate(nan_columns_list):
+    ax = axes[i]
+
+    sns.distplot(df[column], ax=ax, color=colors[i])
+    ax.set_title(column)
+
+for j in range(len(nan_columns_list), len(axes)):
+    axes[j].remove()
+
+plt.show()
+
+
+idx= 0
 for col in df.columns:
     # sns.countplot(data=df, x=col)
     if df[col].dtype == 'object':
@@ -135,48 +204,7 @@ path_dis = "./distribution/df_distributions.png"
 if not os.path.exists(path_dis):
     sns.pairplot(df, hue="RECURRENCE")
     plt.savefig(path_dis)
-### Organize NA values
-# combine follicular subtype with papillar subtype, so to this we change value follicular with the following number of pappillary en after combine them in one col
-df["FOLLICULARSUBTYPE"] = df["FOLLICULARSUBTYPE"].replace({1: 15, 2: 16, 3: 17})
-df['SUBTYPE_FOLLI_PAPIL'] = df['FOLLICULARSUBTYPE'].combine_first(df['PAPILLARYSUBTYPE'])
-print("New SUBTYPE_FOLLI_PAPIL col from FOLLICULARSUBTYPE _ and _ PAPILLARYSUBTYPE cols")
-df.isna().sum() /777 * 100
-# fillna = 0 porque no era neesario que se reporte ese valor
-col_fill_na = [
-    "NUMBEROFLYMPHNODEEXCISION",
-    "NUMBEROFPOSITIVELYMPHNODEEXCISION",
-    "LN RATIO",
-    "SIZEOFPOSITIVELYMPHNODE(cm)",
-    "EXTRANODALEXTENSION",
-    "TSH PRE RAI",
-    "TG PRE RAI",
-    "ANTI TG PRE RAI (POSITIVE or NEGATIVE)",
-    "ANTI TG PRE RAI "
-]
-for col in col_fill_na:
-    if col in df.columns:
-        df[col] = df[col].fillna(0)
-    # df[col_fill_na] = df[col_fill_na].fillna(0)
-    print(f"Na values in {col} filled with 0")
 
-# Remove variables innecesary:
-cols_remove = [
-    "record_id", 
-    "ATA2015_ULTIMA_CONSULTA", 
-    "ATA2025LAST_ULTIMA_CONSULTA", 
-    "ATA_2025_RISCO_INICIAL", 
-    "ATA_2015_RISCO_INICIAL", 
-    "PAPILLARYSUBTYPE", 
-    "FOLLICULARSUBTYPE", 
-    "MUTATION", 
-    "TSH POST OP ", 
-    "TG POST OP", 
-    "ANTI TG POST OP (POSITIVE or NEGATIVE)", 
-    "ANTI TG POST OP VALUE",
-    "TNMN", "TNMM", "STAGE" #AUTHOR (PS) decision!!!
-    ]
-df = df.drop(cols_remove, axis=1) # Remove col innecesary
-print(f"columns: {cols_remove} were removed")
 # df.isna().sum() /777 * 100
 
 # Sperman Correlation and LASSO to select best variables
