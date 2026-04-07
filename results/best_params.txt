@@ -1,0 +1,36 @@
+Logistic Regression, 38, imbalanced data.: {'C': 0.1, 'penalty': 'l2', 'solver': 'liblinear'}
+Logistic Regression, 38, Balanced_SMOTE data.: {'C': 1.0, 'penalty': 'l1', 'solver': 'saga'}
+Random Forest, 38, imbalanced data.: {'max_depth': 10, 'min_samples_leaf': 1, 'min_samples_split': 10, 'n_estimators': 300}
+Random Forest, 38, Balanced_SMOTE data.: {'max_depth': 15, 'min_samples_leaf': 1, 'min_samples_split': 2, 'n_estimators': 200}
+XGBoost, 38, imbalanced data.: {'learning_rate': 0.1, 'max_depth': 3, 'n_estimators': 50}
+XGBoost, 38, Balanced_SMOTE data.: {'learning_rate': 0.3, 'max_depth': 5, 'n_estimators': 100}
+KNN, 38, imbalanced data.: {'n_neighbors': 7, 'weights': 'uniform'}
+KNN, 38, Balanced_SMOTE data.: {'n_neighbors': 3, 'weights': 'distance'}
+SVC, 38, imbalanced data.: {'C': 0.1, 'gamma': 'scale', 'kernel': 'linear'}
+SVC, 38, Balanced_SMOTE data.: {'C': 10, 'gamma': 'auto', 'kernel': 'rbf'}
+GaussianNB, 38, imbalanced data.: {'var_smoothing': 1e-09}
+GaussianNB, 38, Balanced_SMOTE data.: {'var_smoothing': 1e-09}
+Logistic Regression, 19, imbalanced data.: {'C': 0.1, 'penalty': 'l2', 'solver': 'liblinear'}
+Logistic Regression, 19, Balanced_SMOTE data.: {'C': 0.1, 'penalty': 'l2', 'solver': 'saga'}
+Random Forest, 19, imbalanced data.: {'max_depth': 15, 'min_samples_leaf': 2, 'min_samples_split': 2, 'n_estimators': 100}
+Random Forest, 19, Balanced_SMOTE data.: {'max_depth': 15, 'min_samples_leaf': 1, 'min_samples_split': 2, 'n_estimators': 300}
+XGBoost, 19, imbalanced data.: {'learning_rate': 0.1, 'max_depth': 3, 'n_estimators': 50}
+XGBoost, 19, Balanced_SMOTE data.: {'learning_rate': 0.3, 'max_depth': 7, 'n_estimators': 200}
+KNN, 19, imbalanced data.: {'n_neighbors': 7, 'weights': 'distance'}
+KNN, 19, Balanced_SMOTE data.: {'n_neighbors': 3, 'weights': 'distance'}
+SVC, 19, imbalanced data.: {'C': 1, 'gamma': 'scale', 'kernel': 'linear'}
+SVC, 19, Balanced_SMOTE data.: {'C': 10, 'gamma': 'auto', 'kernel': 'rbf'}
+GaussianNB, 19, imbalanced data.: {'var_smoothing': 1e-09}
+GaussianNB, 19, Balanced_SMOTE data.: {'var_smoothing': 1e-09}
+Logistic Regression, 18, imbalanced data.: {'C': 10.0, 'penalty': 'l1', 'solver': 'liblinear'}
+Logistic Regression, 18, Balanced_SMOTE data.: {'C': 10.0, 'penalty': 'l1', 'solver': 'liblinear'}
+Random Forest, 18, imbalanced data.: {'max_depth': 10, 'min_samples_leaf': 1, 'min_samples_split': 5, 'n_estimators': 200}
+Random Forest, 18, Balanced_SMOTE data.: {'max_depth': 10, 'min_samples_leaf': 1, 'min_samples_split': 2, 'n_estimators': 200}
+XGBoost, 18, imbalanced data.: {'learning_rate': 0.3, 'max_depth': 3, 'n_estimators': 50}
+XGBoost, 18, Balanced_SMOTE data.: {'learning_rate': 0.3, 'max_depth': 5, 'n_estimators': 100}
+KNN, 18, imbalanced data.: {'n_neighbors': 5, 'weights': 'uniform'}
+KNN, 18, Balanced_SMOTE data.: {'n_neighbors': 3, 'weights': 'distance'}
+SVC, 18, imbalanced data.: {'C': 1, 'gamma': 'scale', 'kernel': 'linear'}
+SVC, 18, Balanced_SMOTE data.: {'C': 10, 'gamma': 'auto', 'kernel': 'rbf'}
+GaussianNB, 18, imbalanced data.: {'var_smoothing': 1e-09}
+GaussianNB, 18, Balanced_SMOTE data.: {'var_smoothing': 1e-09}

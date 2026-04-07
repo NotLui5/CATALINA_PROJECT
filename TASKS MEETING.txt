@@ -11,3 +11,40 @@ TRAINING - DEVOLOPMENT - INTERNAL VALIDATION - EXTERNAL VALIDATION
 VALORES NA cuales y cuantos
 scalers 
 
+
+
+
+##############################################
+Next steps (April, 2026)
+##############################################
+-
+
+
+
+
+
+
+
+
+Background:
+https://machinelearningmastery.com/cost-sensitive-learning-for-imbalanced-classification/
+
+There is a tight-coupling between imbalanced classification and cost-sensitive learning. Specifically, an imbalanced learning problem can be addressed using cost-sensitive learning.
+Nevertheless, cost-sensitive learning is a separate subfield of study and cost may be defined more broadly than prediction error or classification error. This means that although some methods from cost-sensitive learning can be helpful on imbalanced classification, not all cost-sensitive learning techniques are imbalanced-learning techniques, and conversely, not all methods used to address imbalanced learning are appropriate for cost-sensitive learning.
+
+
+
+
+
+
+
+
+for imbalanced classification tasks is to assign costs based on the inverse class distribution. For example, we may have a dataset with a 1 to 100 (1:100) ratio of examples in the minority class to examples in the majority class. This ratio can be inverted and used as the cost of misclassification errors, where the cost of a False Negative is 100 and the cost of a False Positive is 1. As such, it is a good idea to use this heuristic as a starting point, then test a range of similar related costs or ratios to confirm it is sensible.
+
+
+
+https://machinelearningmastery.com/smote-oversampling-for-imbalanced-classification/
+… SMOTE Synthetic Minority Oversampling TEchnique, or SMOTE for short, first selects a minority class instance a at random and finds its k nearest minority class neighbors. The synthetic instance is then created by choosing one of the k nearest neighbors b at random and connecting a and b to form a line segment in the feature space. The synthetic instances are generated as a convex combination of the two chosen instances a and b.
+The approach is effective because new synthetic examples from the minority class are created that are plausible, that is, are relatively close in feature space to existing examples from the minority class.
+The original paper on SMOTE suggested combining SMOTE with random undersampling of the majority class.
+
