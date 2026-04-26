@@ -17,16 +17,50 @@ scalers
 ##############################################
 Next steps (April, 2026)
 ##############################################
--
+- Try imputation only in train NO  test (develop) or internal validation database?
+- Implement pipelines to CV
+- Which class is more important (TP: F-measures, TN: F2-measures, FPFN: F1, roc_auc)
+- cuando comparo con ata 2015, 2025. training? develop? val inter? external?
+- SMOTE antes de hacer select features by lasso?
+
+
+!!! LOG TRANSF GRAPHS - MIO
+!!! CLASS WEIGHT BALANCE IN LOGISTIC REGRESSION
+!!! CALIBRATION TEST DATA
+!!! Boost strapping instead of CV
+!!! RNN - RECURRENCE NEURAL NETWORK
+!!! LSTM 
+!!! LIGHT GBM
+!!! CatBoost
+
+ANTI TG PRE RAI 
+ANTI TG PRE RAI (POSITIVE or NEGATIVE)
+TSH PRE RAI
+ANTI TG FOLLOW UP
+ANTI TG FOLLOW UP (POSITIVE or NEGATIVE)
+
+
+-------------------------------------------
+How treat 0 values at LN RATIO and NUMBEROFLYMPHNODEEXCISION
+-------------------------------------------
+2026-04-09 16:49:40,444 - WARNING - Column 'TUMORSIZE (cm)' had min value 0.0 in 0.19%. Shifted by 2.22e-16
+2026-04-09 16:49:40,449 - WARNING - Column 'NUMBEROFLYMPHNODEEXCISION' had min value 0.0 in 9.95%. Shifted by 2.22e-16
+2026-04-09 16:49:40,456 - WARNING - Column 'NUMBEROFPOSITIVELYMPHNODEEXCISION' had min value 0.0 in 17.65%. Shifted by 2.22e-16
+2026-04-09 16:49:40,460 - WARNING - Column 'LN RATIO' had min value 0.0 in 7.61%. Shifted by 2.22e-16
+2026-04-09 16:49:40,475 - WARNING - Column 'TG PRE RAI' had min value 0.0 in 1.31%. Shifted by 2.22e-16
+2026-04-09 16:49:40,491 - WARNING - Column 'ANTI TG FOLLOW UP' had min value 0.0 in 0.09%. Shifted by 2.22e-16
+-----------------------------------------
 
 
 
-
-
-
-
-
+###############################################
 Background:
+###############################################
+
+First metrics...:
+https://machinelearningmastery.com/framework-for-imbalanced-classification-projects/
+
+
 https://machinelearningmastery.com/cost-sensitive-learning-for-imbalanced-classification/
 
 There is a tight-coupling between imbalanced classification and cost-sensitive learning. Specifically, an imbalanced learning problem can be addressed using cost-sensitive learning.

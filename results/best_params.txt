@@ -34,3 +34,81 @@ SVC, 18, imbalanced data.: {'C': 1, 'gamma': 'scale', 'kernel': 'linear'}
 SVC, 18, Balanced_SMOTE data.: {'C': 10, 'gamma': 'auto', 'kernel': 'rbf'}
 GaussianNB, 18, imbalanced data.: {'var_smoothing': 1e-09}
 GaussianNB, 18, Balanced_SMOTE data.: {'var_smoothing': 1e-09}
+LogisticRegression, Random Search, 16, imbalanced data.: {'solver': 'liblinear', 'penalty': 'l2', 'C': 0.1}
+RandomForest, Random Search, 16, imbalanced data.: {'n_estimators': 200, 'min_samples_split': 2, 'min_samples_leaf': 2, 'max_depth': 10}
+XGBoost, Random Search, 16, imbalanced data.: {'n_estimators': 100, 'max_depth': 5, 'learning_rate': 0.01}
+KNN, Random Search, 16, imbalanced data.: {'weights': 'distance', 'n_neighbors': 9}
+SVC, Random Search, 16, imbalanced data.: {'kernel': 'linear', 'C': 0.1}
+GaussianNB, Random Search, 16, imbalanced data.: {'var_smoothing': 1e-09}
+LogisticRegression, Random Search, 16, imbalanced data.: {'solver': 'liblinear', 'penalty': 'l2', 'C': 0.1}
+RandomForest, Random Search, 16, imbalanced data.: {'n_estimators': 200, 'min_samples_split': 2, 'min_samples_leaf': 2, 'max_depth': 10}
+XGBoost, Random Search, 16, imbalanced data.: {'n_estimators': 100, 'max_depth': 5, 'learning_rate': 0.01}
+KNN, Random Search, 16, imbalanced data.: {'weights': 'distance', 'n_neighbors': 9}
+SVC, Random Search, 16, imbalanced data.: {'kernel': 'linear', 'C': 0.1}
+GaussianNB, Random Search, 16, imbalanced data.: {'var_smoothing': 1e-09}
+LogisticRegression, Random Search, 16, imbalanced data.: {'solver': 'liblinear', 'penalty': 'l1', 'C': 0.1}
+RandomForest, Random Search, 16, imbalanced data.: {'n_estimators': 100, 'min_samples_split': 2, 'min_samples_leaf': 1, 'max_depth': 15}
+XGBoost, Random Search, 16, imbalanced data.: {'n_estimators': 100, 'max_depth': 7, 'learning_rate': 0.1}
+KNN, Random Search, 16, imbalanced data.: {'weights': 'distance', 'n_neighbors': 9}
+SVC, Random Search, 16, imbalanced data.: {'kernel': 'rbf', 'C': 10}
+GaussianNB, Random Search, 16, imbalanced data.: {'var_smoothing': 1e-09}
+LogisticRegression, Random Search, 16, imbalanced data.: {'solver': 'liblinear', 'penalty': 'l2', 'C': 0.1}
+RandomForest, Random Search, 16, imbalanced data.: {'n_estimators': 200, 'min_samples_split': 2, 'min_samples_leaf': 2, 'max_depth': 10}
+XGBoost, Random Search, 16, imbalanced data.: {'n_estimators': 100, 'max_depth': 5, 'learning_rate': 0.01}
+KNN, Random Search, 16, imbalanced data.: {'weights': 'distance', 'n_neighbors': 9}
+SVC, Random Search, 16, imbalanced data.: {'kernel': 'linear', 'C': 0.1}
+GaussianNB, Random Search, 16, imbalanced data.: {'var_smoothing': 1e-09}
+LogisticRegression, Random Search, 16, imbalanced data.: {'solver': 'liblinear', 'penalty': 'l1', 'C': 0.1}
+RandomForest, Random Search, 16, imbalanced data.: {'n_estimators': 100, 'min_samples_split': 2, 'min_samples_leaf': 1, 'max_depth': 15}
+XGBoost, Random Search, 16, imbalanced data.: {'n_estimators': 100, 'max_depth': 7, 'learning_rate': 0.1}
+KNN, Random Search, 16, imbalanced data.: {'weights': 'distance', 'n_neighbors': 9}
+SVC, Random Search, 16, imbalanced data.: {'kernel': 'rbf', 'C': 10}
+GaussianNB, Random Search, 16, imbalanced data.: {'var_smoothing': 1e-09}
+LogisticRegression, Random Search, 16, imbalanced data.: {'solver': 'liblinear', 'penalty': 'l2', 'C': 0.1}
+RandomForest, Random Search, 16, imbalanced data.: {'n_estimators': 200, 'min_samples_split': 2, 'min_samples_leaf': 2, 'max_depth': 10}
+XGBoost, Random Search, 16, imbalanced data.: {'n_estimators': 100, 'max_depth': 5, 'learning_rate': 0.01}
+KNN, Random Search, 16, imbalanced data.: {'weights': 'distance', 'n_neighbors': 9}
+SVC, Random Search, 16, imbalanced data.: {'kernel': 'linear', 'C': 0.1}
+GaussianNB, Random Search, 16, imbalanced data.: {'var_smoothing': 1e-09}
+LogisticRegression, Random Search, 16, imbalanced data.: {'solver': 'liblinear', 'penalty': 'l1', 'C': 0.1}
+RandomForest, Random Search, 16, imbalanced data.: {'n_estimators': 100, 'min_samples_split': 2, 'min_samples_leaf': 1, 'max_depth': 15}
+XGBoost, Random Search, 16, imbalanced data.: {'n_estimators': 100, 'max_depth': 7, 'learning_rate': 0.1}
+KNN, Random Search, 16, imbalanced data.: {'weights': 'distance', 'n_neighbors': 9}
+SVC, Random Search, 16, imbalanced data.: {'kernel': 'rbf', 'C': 10}
+GaussianNB, Random Search, 16, imbalanced data.: {'var_smoothing': 1e-09}
+LogisticRegression, Grid Search, 16, imbalanced data.: {'C': 0.1, 'penalty': 'l2', 'solver': 'liblinear'}
+RandomForest, Grid Search, 16, imbalanced data.: {'max_depth': 15, 'min_samples_leaf': 1, 'min_samples_split': 2, 'n_estimators': 200}
+XGBoost, Grid Search, 16, imbalanced data.: {'learning_rate': 0.01, 'max_depth': 5, 'n_estimators': 100}
+KNN, Grid Search, 16, imbalanced data.: {'n_neighbors': 9, 'weights': 'distance'}
+SVC, Grid Search, 16, imbalanced data.: {'C': 0.1, 'kernel': 'linear'}
+GaussianNB, Grid Search, 16, imbalanced data.: {'var_smoothing': 1e-09}
+LogisticRegression, Grid Search, 16, imbalanced data.: {'C': 0.1, 'penalty': 'l1', 'solver': 'liblinear'}
+RandomForest, Grid Search, 16, imbalanced data.: {'max_depth': 15, 'min_samples_leaf': 1, 'min_samples_split': 2, 'n_estimators': 200}
+XGBoost, Grid Search, 16, imbalanced data.: {'learning_rate': 0.1, 'max_depth': 7, 'n_estimators': 100}
+KNN, Grid Search, 16, imbalanced data.: {'n_neighbors': 9, 'weights': 'distance'}
+SVC, Grid Search, 16, imbalanced data.: {'C': 10, 'kernel': 'rbf'}
+GaussianNB, Grid Search, 16, imbalanced data.: {'var_smoothing': 1e-09}
+LogisticRegression, Random Search, 38, imbalanced data.: {'solver': 'liblinear', 'penalty': 'l1', 'C': 0.1}
+RandomForest, Random Search, 38, imbalanced data.: {'n_estimators': 200, 'min_samples_split': 5, 'min_samples_leaf': 1, 'max_depth': 10}
+XGBoost, Random Search, 38, imbalanced data.: {'n_estimators': 200, 'max_depth': 3, 'learning_rate': 0.01}
+KNN, Random Search, 38, imbalanced data.: {'weights': 'uniform', 'n_neighbors': 9}
+SVC, Random Search, 38, imbalanced data.: {'kernel': 'rbf', 'C': 1}
+GaussianNB, Random Search, 38, imbalanced data.: {'var_smoothing': 1e-09}
+LogisticRegression, Random Search, 38, imbalanced data.: {'solver': 'liblinear', 'penalty': 'l1', 'C': 0.1}
+RandomForest, Random Search, 38, imbalanced data.: {'n_estimators': 100, 'min_samples_split': 2, 'min_samples_leaf': 1, 'max_depth': 15}
+XGBoost, Random Search, 38, imbalanced data.: {'n_estimators': 200, 'max_depth': 5, 'learning_rate': 0.1}
+KNN, Random Search, 38, imbalanced data.: {'weights': 'distance', 'n_neighbors': 7}
+SVC, Random Search, 38, imbalanced data.: {'kernel': 'rbf', 'C': 10}
+GaussianNB, Random Search, 38, imbalanced data.: {'var_smoothing': 1e-09}
+LogisticRegression, Grid Search, 38, imbalanced data.: {'C': 0.1, 'penalty': 'l1', 'solver': 'liblinear'}
+RandomForest, Grid Search, 38, imbalanced data.: {'max_depth': 15, 'min_samples_leaf': 1, 'min_samples_split': 5, 'n_estimators': 100}
+XGBoost, Grid Search, 38, imbalanced data.: {'learning_rate': 0.01, 'max_depth': 3, 'n_estimators': 200}
+KNN, Grid Search, 38, imbalanced data.: {'n_neighbors': 9, 'weights': 'uniform'}
+SVC, Grid Search, 38, imbalanced data.: {'C': 1, 'kernel': 'rbf'}
+GaussianNB, Grid Search, 38, imbalanced data.: {'var_smoothing': 1e-09}
+LogisticRegression, Grid Search, 38, imbalanced data.: {'C': 0.1, 'penalty': 'l1', 'solver': 'liblinear'}
+RandomForest, Grid Search, 38, imbalanced data.: {'max_depth': 15, 'min_samples_leaf': 1, 'min_samples_split': 2, 'n_estimators': 200}
+XGBoost, Grid Search, 38, imbalanced data.: {'learning_rate': 0.1, 'max_depth': 5, 'n_estimators': 200}
+KNN, Grid Search, 38, imbalanced data.: {'n_neighbors': 7, 'weights': 'distance'}
+SVC, Grid Search, 38, imbalanced data.: {'C': 10, 'kernel': 'rbf'}
+GaussianNB, Grid Search, 38, imbalanced data.: {'var_smoothing': 1e-09}
