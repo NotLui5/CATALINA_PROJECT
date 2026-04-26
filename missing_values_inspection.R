@@ -126,4 +126,4 @@ data_m1 <- complete(gm, 1) #### DATA CON MUJLTIPLE IMPUTATION
 data_m10 <- complete(gm,1)
 for (i in 2:10) { #2:m
   data_m10  <- rbind(data_m10, complete(gm,i))}
-data_m1$w <- 1/10 # 1/m  #### DATA CON MULTIPLE IMPUTATION X10 
+data_m10$w <- 1/10 # 1/m  #### DATA CON MULTIPLE IMPUTATION X10 
