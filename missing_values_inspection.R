@@ -129,10 +129,15 @@ data_m10$w <- 1/10 # 1/m  #### DATA CON MULTIPLE IMPUTATION X10
 data_m1 <- data_m1 %>%
   mutate(across(all_of(cols_nodes_excision), ~ if_else(number_ln_exc == 0, NA, .x)))  %>%
   mutate(across(all_of(cols_rai), ~ if_else(rai == 0, NA, .x)))
-write.csv(data_m1,"./database/data_mice1.csv", row.names = FALSE)
+# write.csv(data_m1,"./database/data_mice1.csv", row.names = FALSE)
 
 data_m10 <- data_m10 %>%
   mutate(across(all_of(cols_nodes_excision), ~ if_else(number_ln_exc == 0, NA, .x)))  %>%
   mutate(across(all_of(cols_rai), ~ if_else(rai == 0, NA, .x)))
 
-write.csv(data_m10,"./database/data_mice10.csv", row.names = FALSE)
+# write.csv(data_m10,"./database/data_mice10.csv", row.names = FALSE)
+
+for (i in 1:10) {
+  df_i <- complete(gm, i)
+  write.csv(df_i, paste0("./database/imputation_mice/data_imp_", i, ".csv"), row.names = FALSE)
+}

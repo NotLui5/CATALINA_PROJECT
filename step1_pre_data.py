@@ -231,83 +231,82 @@ df.to_csv("./database/database_summaried.csv", index=False)
 table_stats_intial = create_summary_table(df, categorical_variable, map_variables)
 table_stats_intial.to_excel("./results/initial_summary_table.xlsx", index=False)
 
-data_set = pd.read_csv("./database/database_summaried.csv")
-data1 = data_set.copy()
-data1["THYROID DISEASE PREOP"] = data1["THYROID DISEASE PREOP"].replace({"EUTHYROIDISM": 0, "HYPOTHYROIDISM": 1, "HYPERTHYROIDISM": 2})
-categ, continous = define_variables(data1)
-for x in data1.columns:
-    if x in categ:
-        data1[x] = data1[x].astype('Int64')
+# data_set = pd.read_csv("./database/database_summaried.csv")
+# data1 = data_set.copy()
+# data1["THYROID DISEASE PREOP"] = data1["THYROID DISEASE PREOP"].replace({"EUTHYROIDISM": 0, "HYPOTHYROIDISM": 1, "HYPERTHYROIDISM": 2})
+# categ, continous = define_variables(data1)
+# for x in data1.columns:
+#     if x in categ:
+#         data1[x] = data1[x].astype('Int64')
     
-nodes_vars = ['NUMBEROFPOSITIVELYMPHNODEEXCISION', 'LN RATIO', 'SIZEOFPOSITIVELYMPHNODE(cm)']
-rai_vars = ['RAIDOSE', 'TG PRE RAI']
+# nodes_vars = ['NUMBEROFPOSITIVELYMPHNODEEXCISION', 'LN RATIO', 'SIZEOFPOSITIVELYMPHNODE(cm)']
+# rai_vars = ['RAIDOSE', 'TG PRE RAI']
 
-from sklearn.experimental import enable_iterative_imputer
-from sklearn.impute import IterativeImputer
-# Linear model import
-from sklearn.linear_model import BayesianRidge
-# Ensemble model imports
-from sklearn.ensemble import ExtraTreesRegressor, RandomForestRegressor
+# from sklearn.impute import IterativeImputer
+# # Linear model import
+# from sklearn.linear_model import BayesianRidge
+# # Ensemble model imports
+# from sklearn.ensemble import ExtraTreesRegressor, RandomForestRegressor
 
 
-# Condición previa a la imputación: si NUMBEROFLYMPHNODEEXCISION == 0 -> nodes_vars = NA
-cond_nodes = data1['NUMBEROFLYMPHNODEEXCISION'] == 0
-for col in nodes_vars:
-    data1.loc[cond_nodes, col] = np.nan
+# # Condición previa a la imputación: si NUMBEROFLYMPHNODEEXCISION == 0 -> nodes_vars = NA
+# cond_nodes = data1['NUMBEROFLYMPHNODEEXCISION'] == 0
+# for col in nodes_vars:
+#     data1.loc[cond_nodes, col] = np.nan
 
-# Si RAI == 0 -> rai_vars = NA (antes de imputar)
-cond_rai = data1['RAI'] == 0
-for col in rai_vars:
-    data1.loc[cond_rai, col] = np.nan
+# # Si RAI == 0 -> rai_vars = NA (antes de imputar)
+# cond_rai = data1['RAI'] == 0
+# for col in rai_vars:
+#     data1.loc[cond_rai, col] = np.nan
 
-# Imputadores
-imputers = {
-    'bayesian_ridge': IterativeImputer(estimator=BayesianRidge(), random_state=42),
-    'extra_trees': IterativeImputer(estimator=ExtraTreesRegressor(n_estimators=10, random_state=42), random_state=42),
-    'rf_regressor': IterativeImputer(estimator=RandomForestRegressor(n_estimators=10, random_state=42), random_state=42)
-}
+# # Imputadores
+# imputers = {
+#     'bayesian_ridge': IterativeImputer(estimator=BayesianRidge(), random_state=42),
+#     'extra_trees': IterativeImputer(estimator=ExtraTreesRegressor(n_estimators=10, random_state=42), random_state=42),
+#     'rf_regressor': IterativeImputer(estimator=RandomForestRegressor(n_estimators=10, random_state=42), random_state=42)
+# }
 
-imputed_datasets = {}
+# imputed_datasets = {}
 
-for name, imputer in imputers.items():
-    # Imputar todo el data1
-    imputed_array = imputer.fit_transform(data1)
-    imputed_df = pd.DataFrame(imputed_array, columns=data1.columns, index=data1.index)
+# for name, imputer in imputers.items():
+#     # Imputar todo el data1
+#     imputed_array = imputer.fit_transform(data1)
+#     imputed_df = pd.DataFrame(imputed_array, columns=data1.columns, index=data1.index)
     
-    # Reaplicar condiciones con los valores imputados de las variables condición
-    cond_nodes_post = imputed_df['NUMBEROFLYMPHNODEEXCISION'] == 0
-    for col in nodes_vars:
-        imputed_df.loc[cond_nodes_post, col] = np.nan
+#     # Reaplicar condiciones con los valores imputados de las variables condición
+#     cond_nodes_post = imputed_df['NUMBEROFLYMPHNODEEXCISION'] == 0
+#     for col in nodes_vars:
+#         imputed_df.loc[cond_nodes_post, col] = np.nan
     
-    cond_rai_post = imputed_df['RAI'] == 0
-    for col in rai_vars:
-        imputed_df.loc[cond_rai_post, col] = np.nan
+#     cond_rai_post = imputed_df['RAI'] == 0
+#     for col in rai_vars:
+#         imputed_df.loc[cond_rai_post, col] = np.nan
     
-    imputed_datasets[name] = imputed_df
+#     imputed_datasets[name] = imputed_df
 
-# print("\n3. Imputed Dataset Versions based on Different Estimators:")
-for name, dataset in imputed_datasets.items():
-    print(f"{name}: THYROID DISEASE PREOP = {dataset['THYROID DISEASE PREOP'].value_counts()}")
+# # print("\n3. Imputed Dataset Versions based on Different Estimators:")
+# for name, dataset in imputed_datasets.items():
+#     print(f"{name}: THYROID DISEASE PREOP = {dataset['THYROID DISEASE PREOP'].value_counts()}")
     
     
-#Data final to start imputation and modeling
-encoder = OneHotEncoder(sparse_output=False, handle_unknown='ignore',dtype=int )
-encoded_array = encoder.fit_transform(df[['THYROID DISEASE PREOP']])
+# #Data final to start imputation and modeling
+# encoder = OneHotEncoder(sparse_output=False, handle_unknown='ignore',dtype=int )
+# encoded_array = encoder.fit_transform(df[['THYROID DISEASE PREOP']])
 
-feature_names = encoder.get_feature_names_out(['THYROID DISEASE PREOP'])
-print(f"Nombres de columnas: {feature_names}")  # Ver cuántos hay
-print(f"Forma del array codificado: {encoded_array.shape}")  # Debe coincidir
+# feature_names = encoder.get_feature_names_out(['THYROID DISEASE PREOP'])
+# print(f"Nombres de columnas: {feature_names}")  # Ver cuántos hay
+# print(f"Forma del array codificado: {encoded_array.shape}")  # Debe coincidir
 
-# Crear DataFrame con las nuevas columnas
-encoded_df = pd.DataFrame(
-    encoded_array,
-    columns=feature_names,   # Aquí usamos exactamente los nombres devueltos
-    index=df.index
-)
-encoded_df = encoded_df.drop(columns=['THYROID DISEASE PREOP_nan'], errors='ignore')
-encoded_df.columns = encoded_df.columns.str.replace('THYROID DISEASE PREOP_', '')
-# Unir con el resto de columnas (excluyendo la original)
-df = pd.concat([df.drop('THYROID DISEASE PREOP', axis=1), encoded_df], axis=1)
+# # Crear DataFrame con las nuevas columnas
+# encoded_df = pd.DataFrame(
+#     encoded_array,
+#     columns=feature_names,   # Aquí usamos exactamente los nombres devueltos
+#     index=df.index
+# )
+# encoded_df = encoded_df.drop(columns=['THYROID DISEASE PREOP_nan'], errors='ignore')
+# encoded_df.columns = encoded_df.columns.str.replace('THYROID DISEASE PREOP_', '')
+# # Unir con el resto de columnas (excluyendo la original)
+# df = pd.concat([df.drop('THYROID DISEASE PREOP', axis=1), encoded_df], axis=1)
 
-path_base = "./database/hee_brazil_ambato_peru_base.csv"
-df.to_csv(path_base, index=False)
+# path_base = "./database/hee_brazil_ambato_peru_base.csv"
+# df.to_csv(path_base, index=False)

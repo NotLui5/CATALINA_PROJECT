@@ -133,57 +133,9 @@ def define_variables(df):
     
     return categorical_variable, continuous_variable
 
-def handle_missing_data(df, categorical_variables):
-    """
-    Impute missing values with validation.
-    
-    Args:
-        df: DataFrame
-        categorical_variables: list of categorical columns
-        continuous_variables: list of continuous columns
-    
-    Returns:
-        Imputed DataFrame
-    """
-    df_imputed = df.copy()
-    imputation_log = {}
-    
-    for col in df_imputed.columns:
-        if df_imputed[col].isnull().sum() == 0:
-            continue
-        
-        try:
-            if col in categorical_variables:
-                mode_val = df_imputed[col].mode()
-                if len(mode_val) > 0:
-                    df_imputed[col].fillna(mode_val[0], inplace=True)
-                    df_imputed[col] = df_imputed[col].astype('uint8')
-                    imputation_log[col] = f"mode: {mode_val[0]}"
-                    logger.info(f"Imputed categorical '{col}' with mode: {mode_val[0]}")
-                else:
-                    logger.warning(f"No mode found for {col}. Filling with 0.")
-                    df_imputed[col].fillna(0, inplace=True)
-                    imputation_log[col] = "mode: 0 (default)"
-            else:
-                median_val = df_imputed[col].median()
-                df_imputed[col].fillna(median_val, inplace=True)
-                imputation_log[col] = f"median: {median_val}"
-                logger.info(f"Imputed continuous '{col}' with median: {median_val}")
-        except Exception as e:
-            logger.error(f"Error imputing {col}: {e}")
-    
-    # Save imputation log
-    if imputation_log:
-        with open("./logs/imputation_log.txt", "w") as f:
-            for col, method in imputation_log.items():
-                f.write(f"{col}: {method}\n")
-    
-    return df_imputed
-
 # ============================================================================
 # 3. SAFE LOG TRANSFORMATION
 # ============================================================================
-
 def safe_log_transform(df, columns, epsilon=2.220446049250313e-16):
     """
     Apply log transformation with safety checks for zeros/negatives.
@@ -944,40 +896,40 @@ def main():
     args = parse_arguments()    
 
     df = load_data(args.data_path)
+    df = pd.get_dummies(df, columns=['thy_disease_preop'], drop_first=True)
     
     map_variables = { #Last Changes 
-        "SEX": {0: "Female", 1: "Male"}, #1-> 0, 2->1
-        "RADIOTHERAPY EXPOSURE": {1: "Yes", 0: "No"}, #2->0
-        "FAMILY HISTORY OF THYROID CANCER": {1: "Yes", 0: "No"}, #2->0,
-        "EUTHYROIDISM": {0: "No", 1: "Yes"}, #2->0
-        "HYPOTHYROIDISM": {0: "No", 1: "Yes"},
-        "HYPERTHYROIDISM": {0: "No", 1: "Yes"},
-        "THYROIDECTOMY APPROACH": {0: "Total", 1: "Total + Lymphadenectomy"}, #1->0, 2->1
-        "TYPEOFRESECTION": {0: "R0", 1: "R1", 2: "R2"},#1->0, 2->1, 3->2   
-        "HISTOLOGY": {0: "Papilar", 1: "Folicular", 2: "Hurtle Cells"}, #1->0, 2->1, 3->2
-        "SUBTYPE_FOLLI_PAPIL": {0: "Minimally invasive", 1: "Encapsulated invasive", 2: "Widely invasive",
+        "sex": {0: "Female", 1: "Male"}, #1-> 0, 2->1
+        "radiotherapy": {1: "Yes", 0: "No"}, #2->0
+        "family_history": {1: "Yes", 0: "No"}, #2->0,
+        "thy_disease_preop": {0: "euthyroidism", 1: "hypothyroidism", 2: "hyperthyroidism"},
+        "euthyroidism": {1: "Yes", 0: "No"},
+        "hypothyroidism": {1: "Yes", 0: "No"},
+        "hyperthyroidism": {1: "Yes", 0: "No"},
+        "thyrodectomy_approach": {0: "Total", 1: "Total + Lymphadenectomy"}, #1->0, 2->1
+        "type_resection": {0: "R0", 1: "R1", 2: "R2"},#1->0, 2->1, 3->2   
+        "histology": {0: "Papilar", 1: "Folicular", 2: "Hurtle Cells"}, #1->0, 2->1, 3->2
+        "subtype": {0: "Minimally invasive", 1: "Encapsulated invasive", 2: "Widely invasive",
             3: "Classic", 4: "Follicular variant", 5: "Encapsulated", 6: "Diffuse sclerosant",
             7: "High cells", 8: "Colunar cells", 9: "Cribiform-morular", 10: "Hobnail", 
             11: "Warthin-like", 12: "Oncocytic", 13: "Trabecular/Solid", 14: "Classic and Follicular",
             15: "Follicular and oncocytic"}, #1->0, 2->1, 3->2, 15->3, 16->4, 17->5, 5->6, 6->7, 7->8, 8->9, 9->10, 10->11, 11->12, 12->13, 13->14, 14->15
-        "EXTRATHYROIDALEXTENSION": {0: "Absent", 1: "Microscopic", 2: "Macroscopic"}, #1->0, 2->1, 3->2
-        "MULTICENTRIC": {1: "Yes", 0: "No"}, #2->0
-        "MULTICENTER_BILATERAL": {1: "Yes", 0: "No"}, #2->0
-        "VASCULARINVASION": {1: "Yes", 0: "No"}, #2->0
-        "PERINEURALINVASION": {1: "Yes", 0: "No"}, #2->0
-        "POSITIVELYMPHNODEN1": {0: "No excision", 2: "Yes", 1: "No"}, #2->1, 1->2
-        "EXTRANODALEXTENSION": {1: "Yes", 0: "No"}, #2->0
-        "TNMT": {0: "Tx", 1: "T1", 2: "T2", 3: "T3", 4: "T4"},
-        "HASHIMOTO THYROIDITIS": {1: "Yes", 0: "No"}, #2->0
-        "TNMN": {1: "N0", 2: "N1a", 3: "N1b", 0: "Nx"}, #3->0, 0->1, 1->2, 2->3
-        "TNMM": {0: "M0", 1: "M1"}, 
-        "STAGE": {0: "I", 1: "II", 2: "III", 3: "IV"}, #1->0, 2->1, 3->2, 4->3
-        "ATA_2015_RISCO_INICIAL": {1: "Bajo", 2: "Intermedio", 3: "Alto"}, 
-        "ATA_2025_RISCO_INICIAL": {1: "Bajo", 2: "Intermedio o Bajo", 3: "Intermedio o Alto", 4: "Alto"},
-        "RAI": {1: "Yes", 0: "No"}, #2->0
-        "ANTI TG PRE RAI (POSITIVE or NEGATIVE)": {1: "Positivo", 0: "Negativo"}, #2->0
-        "ANTI TG FOLLOW UP (POSITIVE or NEGATIVE)": {1: "Positivo", 0: "Negativo"}, #2->0
-        "RECURRENCE": {0: "No Recurrence", 1: "Recurrence"}
+        "extra_thy_exten": {0: "Absent", 1: "Microscopic", 2: "Macroscopic"}, #1->0, 2->1, 3->2
+        "multicentric": {1: "Yes", 0: "No"}, #2->0
+        "multicent_bilat": {1: "Yes", 0: "No"}, #2->0
+        "vascular_inv": {1: "Yes", 0: "No"}, #2->0
+        "perineural_inv": {1: "Yes", 0: "No"}, #2->0
+        "positive_ln": {0: "No excision", 2: "Yes", 1: "No"}, #2->1, 1->2
+        "extranod_exten": {1: "Yes", 0: "No"}, #2->0
+        "tnm_t": {0: "Tx", 1: "T1", 2: "T2", 3: "T3", 4: "T4"},
+        "hashimoto": {1: "Yes", 0: "No"}, #2->0
+        "tnm_n": {1: "N0", 2: "N1a", 3: "N1b", 0: "Nx"}, #3->0, 0->1, 1->2, 2->3
+        "tnm_m": {0: "M0", 1: "M1"}, 
+        "stage": {0: "I", 1: "II", 2: "III", 3: "IV"}, #1->0, 2->1, 3->2, 4->3
+        "ata_2015": {1: "Bajo", 2: "Intermedio", 3: "Alto"}, 
+        "ata_2025": {1: "Bajo", 2: "Intermedio o Bajo", 3: "Intermedio o Alto", 4: "Alto"},
+        "rai": {1: "Yes", 0: "No"}, #2->0
+        "recurrence": {0: "No Recurrence", 1: "Recurrence"}
         }
     
     ### Define variables by n output unique values
@@ -989,9 +941,6 @@ def main():
     
     ### About missing values
     report_missing_data(df)
-
-    ### imputation data 
-    df_imputed = handle_missing_data(df, categorical_variable)
     
     ### Attempt to normalize by log transformation
     df_log = safe_log_transform(df_imputed, continuous_variable)
