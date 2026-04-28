@@ -5,6 +5,9 @@ require(data.table)
 require(qreport)  # Define dataChk, missChk, maketabs, ...
 library(dplyr)
 
+library(DescTools)
+library (rms)
+
 
 data_model = read.csv("./database/database_summaried.csv", encoding = "UTF-8")
 names(data_model) = c("sex", "age", "radiotherapy", "family_history", 
@@ -20,11 +23,17 @@ names(data_model) = c("sex", "age", "radiotherapy", "family_history",
 
 cols_nodes_excision <- c("number_posit_ln", "ln_ratio", "size_posit_ln")
 cols_rai <- c("raidose", "tg_pre_rai")
+# data_model_sub <- data_model %>%
+#   mutate(across(all_of(cols_nodes_excision), ~ if_else(number_ln_exc == 0, 0, .x)))
+# 
+# data_model_sub <- data_model_sub %>%
+#   mutate(across(all_of(cols_rai), ~ if_else(rai == 0, 0, .x)))
+
 data_model_sub <- data_model %>%
-  mutate(across(all_of(cols_nodes_excision), ~ if_else(number_ln_exc == 0, 0, .x)))
+  mutate(across(all_of(cols_nodes_excision), ~ if_else(number_ln_exc == 0, NaN, .x)))
 
 data_model_sub <- data_model_sub %>%
-  mutate(across(all_of(cols_rai), ~ if_else(rai == 0, 0, .x)))
+  mutate(across(all_of(cols_rai), ~ if_else(rai == 0, NaN, .x)))
 
 # data_model_subset <- data_model %>%
 #   select(-c(number_posit_ln, ln_ratio, size_posit_ln, 
@@ -66,6 +75,7 @@ rms::survplot(fit, n.risk = TRUE, conf = "band",
 
 
 
+
 data_model <- data_model %>%
   mutate(`thy_disease_preop` = recode(`thy_disease_preop`,
                                           "EUTHYROIDISM" = 0,
@@ -83,6 +93,7 @@ data_raw <- data_model
 data_model$tnm_t[data_model$tnm_t == 0] <- NA # tx solo 1, problems with bottstrap
 data_model[vars_to_factor] <- lapply(data_model[vars_to_factor], as.factor)
 data_raw[vars_to_factor] <- lapply(data_raw[vars_to_factor], as.factor)
+data_raw$recurrence <- as.numeric(as.character(data_raw$recurrence))
 
 #colinearity in positive_ln, ln_ratio, number_posit_ln 
 # (for NaN we exclude ln_ratio, and change a number_posit_ln, number_ln_exc, 
@@ -127,3 +138,86 @@ data_m10 <- complete(gm,1)
 for (i in 2:10) { #2:m
   data_m10  <- rbind(data_m10, complete(gm,i))}
 data_m10$w <- 1/10 # 1/m  #### DATA CON MULTIPLE IMPUTATION X10 
+
+# #Check percentiles
+# for (i in 1:5) {
+#   cat("\nImputación:", i, "\n")
+#   print(summary(complete(gm, i)[cont_vars]))
+# }
+# 
+# #Winsorize
+# data_raw <- data_raw %>%
+#   mutate(across(c(tumor_size, ln_ratio, tg_pre_rai, tsh_follow, tg_follow),
+#                 ~ DescTools::Winsorize(., val = c(0.01, 0.99))))%>%
+#        mutate(recurrence = as.numeric(as.character(recurrence)))
+
+#Cox Regression
+cph_with_xy <- function(...) {cph(..., x = TRUE, y = TRUE, surv = TRUE)}
+
+fit <- fit.mult.impute(
+  Surv(follow_months, recurrence) ~ age + thyrodectomy_approach + type_resection +
+    tumor_size + extra_thy_exten + multicentric + vascular_inv + number_ln_exc + 
+    number_posit_ln + stage + rai + tsh_follow + tg_follow + subtype,
+  fitter = cph_with_xy,
+  xtrans = gm,
+  data = data_raw
+)
+# fit <- lapply(1:10, function(i) {
+#   d <- complete(gm, i)
+#   d_win <- d %>%
+#     mutate(across(c("tumor_size", "ln_ratio", "tg_pre_rai", "tsh_follow", "tg_follow"),
+#                   ~ DescTools::Winsorize(., val = c(0.01, 0.99)))) %>%
+#     mutate(recurrence = as.numeric(as.character(recurrence)))
+#   
+#   coxph(Surv(follow_months, recurrence) ~ age + thyrodectomy_approach + type_resection +
+#           tumor_size + extra_thy_exten + multicentric + vascular_inv + number_ln_exc + 
+#           number_posit_ln + stage + rai + tsh_follow + tg_follow + subtype,
+#         data = d_win)
+# })
+# pooled <- pool(fit)
+# summary(pooled)
+
+# Relative contribution of predictors
+plot(anova(fit), what = "proportion chisq",
+     main = "Relative contribution of predictors",
+     cex.names = 0.7, las = 2)
+
+#Kaplan-Meier curve
+d_first <- complete(gm, 1) %>%
+  mutate(across(c("tumor_size", "ln_ratio", "tg_pre_rai", "tsh_follow", "tg_follow"),
+                ~ DescTools::Winsorize(., val = c(0.01, 0.99)))) %>%
+  mutate(recurrence = as.numeric(as.character(recurrence)))
+
+d_first$lp <- predict(fit, newdata = d_first, type = "lp")
+
+d_first$risk_group <- cut2(d_first$lp, g = 4)
+levels(d_first$risk_group) <- 1:4   # etiquetas 1-4
+
+fit_groups <- npsurv(Surv(follow_months, recurrence) ~ risk_group, data = d_first)
+
+survplot(fit_groups,
+         n.risk = TRUE,
+         conf = "bars",
+         xlab = "Follow-up (months)",
+         ylab = "Recurrence-free survival",
+         label.curves = list(keys = c("Group 1 (lowest risk)", "Group 2", 
+                                      "Group 3", "Group 4 (highest risk)")),
+         col = 1:4, lwd = 2)
+
+#Normogram
+dd <- datadist(complete(gm, 1))
+options(datadist = "dd")
+
+surv_fn <- Survival(fit)
+
+surv_3y <- function(lp) surv_fn(36, lp = lp)
+surv_5y <- function(lp) surv_fn(60, lp = lp)
+
+nom <- nomogram(fit,
+                fun = list(surv_3y, surv_5y),
+                funlabel = c("3-year survival", "5-year survival"),
+                lp = FALSE,
+                maxscale = 100)
+
+plot(nom, col.grid = gray(c(0.8, 0.95)),
+     main = "Nomogram for recurrence-free survival")
