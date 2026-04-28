@@ -23,17 +23,9 @@ names(data_model) = c("sex", "age", "radiotherapy", "family_history",
 
 cols_nodes_excision <- c("number_posit_ln", "ln_ratio", "size_posit_ln")
 cols_rai <- c("raidose", "tg_pre_rai")
-# data_model_sub <- data_model %>%
-#   mutate(across(all_of(cols_nodes_excision), ~ if_else(number_ln_exc == 0, 0, .x)))
-# 
-# data_model_sub <- data_model_sub %>%
-#   mutate(across(all_of(cols_rai), ~ if_else(rai == 0, 0, .x)))
-
 data_model_sub <- data_model %>%
-  mutate(across(all_of(cols_nodes_excision), ~ if_else(number_ln_exc == 0, NaN, .x)))
-
-data_model_sub <- data_model_sub %>%
-  mutate(across(all_of(cols_rai), ~ if_else(rai == 0, NaN, .x)))
+mutate(across(all_of(cols_nodes_excision), ~ if_else(number_ln_exc == 0, 0, .x)))  %>%
+  mutate(across(all_of(cols_rai), ~ if_else(rai == 0, 0, .x)))
 
 # data_model_subset <- data_model %>%
 #   select(-c(number_posit_ln, ln_ratio, size_posit_ln, 
@@ -138,6 +130,22 @@ data_m10 <- complete(gm,1)
 for (i in 2:10) { #2:m
   data_m10  <- rbind(data_m10, complete(gm,i))}
 data_m10$w <- 1/10 # 1/m  #### DATA CON MULTIPLE IMPUTATION X10 
+
+data_m1 <- data_m1 %>%
+  mutate(across(all_of(cols_nodes_excision), ~ if_else(number_ln_exc == 0, NA, .x)))  %>%
+  mutate(across(all_of(cols_rai), ~ if_else(rai == 0, NA, .x)))
+# write.csv(data_m1,"./database/data_mice1.csv", row.names = FALSE)
+
+data_m10 <- data_m10 %>%
+  mutate(across(all_of(cols_nodes_excision), ~ if_else(number_ln_exc == 0, NA, .x)))  %>%
+  mutate(across(all_of(cols_rai), ~ if_else(rai == 0, NA, .x)))
+
+# write.csv(data_m10,"./database/data_mice10.csv", row.names = FALSE)
+
+for (i in 1:10) {
+  df_i <- complete(gm, i)
+  write.csv(df_i, paste0("./database/imputation_mice/data_imp_", i, ".csv"), row.names = FALSE)
+}
 
 # #Check percentiles
 # for (i in 1:5) {
