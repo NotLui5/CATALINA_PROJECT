@@ -1,0 +1,10 @@
+age
+bmi
+tumor_size
+ln_ratio
+size_posit_ln
+raidose
+tg_pre_rai
+follow_months
+tsh_follow
+tg_follow

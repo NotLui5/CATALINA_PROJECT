@@ -1,0 +1,23 @@
+{
+    "selection_method": "lasso",
+    "n_features": 17,
+    "selected_features": [
+        "sex",
+        "thyrodectomy_approach",
+        "type_resection",
+        "extra_thy_exten",
+        "multicentric",
+        "multicent_bilat",
+        "vascular_inv",
+        "positive_ln",
+        "extranod_exten",
+        "tnm_t",
+        "tnm_m",
+        "stage",
+        "rai",
+        "tsh_follow",
+        "tg_follow",
+        "hypothyroidism",
+        "hyperthyroidism"
+    ]
+}

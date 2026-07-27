@@ -523,7 +523,7 @@ def plot_roc_curves(results_list, balanced_state, n_vars):
         balanced_state: data balance state ('Imbalanced' or 'Balanced_SMOTE')
         n_vars: 'all' or 'selected'
     """
-    plt.figure(figsize=(12, 9))
+    plt.figure(figsize=(12, 9)) 
     
     for result in results_list:
         if result.y_scores_test is not None:
@@ -950,7 +950,7 @@ def main():
                                map_variables, skip_plots = args.skip_plots, max_plots=50, log_state=True)
     
     ### 80/20 train/test (Internal validation)
-    x_train, x_test, y_train, y_test = train_test_split(df_log.drop("RECURRENCE", axis=1), df_log["RECURRENCE"], test_size=0.2, stratify=df_log["RECURRENCE"], random_state=0)
+    # x_train, x_test, y_train, y_test = train_test_split(df_log.drop("RECURRENCE", axis=1), df_log["RECURRENCE"], test_size=0.2, stratify=df_log["RECURRENCE"], random_state=0)
     df_log, df_ival, df_log["RECURRENCE"], df_ival["RECURRENCE"] = x_train, x_test, y_train, y_test
 
     no_include = ['RECURRENCE', 'ATA_2015_RISCO_INICIAL', 'ATA_2025_RISCO_INICIAL'] #the lsat vars are for comparative analysis

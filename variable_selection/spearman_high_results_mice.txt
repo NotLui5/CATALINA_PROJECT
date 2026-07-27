@@ -1,0 +1,7 @@
+Correlaciones de Spearman > |0.8| (5 pares):
+==================================================
+positive_ln - ln_ratio: 0.912
+number_ln_exc - ln_ratio: 0.842
+number_posit_ln - ln_ratio: 0.877
+rai - tg_pre_rai: 0.882
+euthyroidism - hyperthyroidism: -0.836

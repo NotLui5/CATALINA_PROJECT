@@ -1,0 +1,18 @@
+==============================================================LASSO selected 16 features:
+thyrodectomy_approach
+type_resection
+multicentric
+multicent_bilat
+vascular_inv
+positive_ln
+extranod_exten
+hashimoto
+tnm_t
+tnm_m
+stage
+rai
+tsh_follow
+tg_follow
+subtype
+hypothyroidism
+==============================================================

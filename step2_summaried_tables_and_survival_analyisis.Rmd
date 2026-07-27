@@ -1,0 +1,215 @@
+---
+title: "Summaried stats"
+knit: (function(inputFile, encoding) { rmarkdown::render(inputFile, encoding = encoding, output_file = paste0(dirname(inputFile),'/README.md')) })
+output: github_document
+---
+
+
+```{r packages, include=FALSE}
+library(rmarkdown)
+library(moonBook)
+require(magrittr)
+require(ztable)
+require(sjlabelled)
+require(survival)
+library(dplyr)
+library(survminer)
+
+knitr::opts_chunk$set(fig.path = "Figures/", dev='svg') # dev = 'png'
+```
+
+```{r prepare, include = FALSE, echo=TRUE}
+all_data <- read.csv(file ="database/database_summaried.csv", encoding = "UTF-8")
+train_data <- read.csv("./database/train_data.csv", encoding = "UTF-8")
+test_data <- read.csv("./database/test_data.csv", encoding = "UTF-8")
+train_data["Group"] <- "Training"
+test_data["Group"] <- "Testing"
+
+all_data <- rbind(test_data, train_data)
+
+all_data$sex<-set_label(all_data$sex,label="Sex")
+all_data$sex<-set_labels(all_data$sex,labels=c("Female","Male"))
+
+all_data$thy_disease_preop <-set_label(all_data$thy_disease_preop,
+                                       label="Thyroid Disease Preoperative")
+all_data$thy_disease_preop<-set_labels(all_data$thy_disease_preop,
+                                       labels=c("Euthyroidism","Hypothyrism", "Hyperthyroidism"))
+
+all_data$radiotherapy <-set_label(all_data$radiotherapy,label="Radiotherapy exposure")
+all_data$radiotherapy<-set_labels(all_data$radiotherapy,labels=c("No", "Yes"))
+
+all_data$family_history <-set_label(all_data$family_history,label="Family history of Thyroid cancer")
+all_data$family_history<-set_labels(all_data$family_history,labels=c("No", "Yes"))
+
+all_data$thyrodectomy_approach <-set_label(all_data$thyrodectomy_approach,
+                                           label="Thyroidectomy approach")
+all_data$thyrodectomy_approach<-set_labels(all_data$thyrodectomy_approach,
+                                           labels=c("Total", "Total + Lymphadenectomy"))
+
+all_data$type_resection <-set_label(all_data$type_resection,
+                                           label="Type of resection")
+all_data$type_resection<-set_labels(all_data$type_resection,
+                                           labels=c("R0", "R1", "R2"))
+
+all_data$histology <-set_label(all_data$histology,
+                                           label="Histology")
+all_data$histology<-set_labels(all_data$histology,
+                                           labels=c("Papilar", "Folicular", "Hurtle Cells"))
+
+all_data$subtype <-set_label(all_data$subtype, label="Subtype")
+all_data$subtype<-set_labels(all_data$subtype, labels=c("Minimally invasive", 
+                  "Encapsulated invasive", "Widely invasive", "Classic", 
+                  "Follicular variant", "Encapsulated", "Diffuse sclerosant", 
+                  "High cells", "Colunar cells", #"Cribiform-morular", "Hobnail",
+                  "Warthin-like", "Oncocytic", "Trabecular/Solid", 
+                  "Classic and Follicular", "Follicular and oncocytic"))
+
+all_data$extra_thy_exten <-set_label(all_data$extra_thy_exten, 
+                                     label="Extrathyroidal extension")
+all_data$extra_thy_exten <- set_labels(all_data$extra_thy_exten, 
+                            labels=c("Absent", "Microscopic", "Macroscopic"))
+
+all_data$multicentric <-set_label(all_data$multicentric, 
+                                     label="Multicentric state")
+all_data$multicentric <- set_labels(all_data$multicentric, 
+                            labels=c("No", "Yes"))
+
+all_data$multicent_bilat <-set_label(all_data$multicent_bilat, 
+                                     label="Multicenter bilateral")
+all_data$multicent_bilat <- set_labels(all_data$multicent_bilat, 
+                            labels=c("No", "Yes"))
+
+all_data$vascular_inv <-set_label(all_data$vascular_inv, 
+                                     label="Vascular invasion")
+all_data$vascular_inv <- set_labels(all_data$vascular_inv, 
+                            labels=c("No", "Yes"))
+
+all_data$perineural_inv <-set_label(all_data$perineural_inv, 
+                                     label="Perineural invasion")
+all_data$perineural_inv <- set_labels(all_data$perineural_inv, 
+                            labels=c("No", "Yes"))
+
+
+all_data$positive_ln <-set_label(all_data$positive_ln, 
+                                     label="Positive Lymphnode")
+all_data$positive_ln <- set_labels(all_data$positive_ln, 
+                            labels=c("No excision", "No", "Yes"))
+        
+all_data$extranod_exten <-set_label(all_data$extranod_exten, 
+                                     label="Extranodal extension")
+all_data$extranod_exten <- set_labels(all_data$extranod_exten, 
+                            labels=c("No", "Yes"))
+
+all_data$tnm_t <-set_label(all_data$tnm_t, 
+                                     label="TNM T")
+all_data$tnm_t <- set_labels(all_data$tnm_t, 
+                            labels=c("Tx", "T1", "T2", "T3", "T4"))
+        
+all_data$hashimoto <-set_label(all_data$hashimoto, 
+                                     label="Hashimoto disease")
+all_data$hashimoto <- set_labels(all_data$hashimoto, 
+                            labels=c("No", "Yes"))
+        
+all_data$tnm_n <-set_label(all_data$tnm_n, 
+                                     label="TNM N")
+all_data$tnm_n <- set_labels(all_data$tnm_n, 
+                            labels=c("Nx", "N0", "N1a", "N1b"))
+
+all_data$tnm_m <-set_label(all_data$tnm_m, 
+                                     label="TNM M")
+all_data$tnm_m <- set_labels(all_data$tnm_m, 
+                            labels=c("M0", "M1"))
+
+all_data$stage <-set_label(all_data$stage, 
+                                     label="Stage")
+all_data$stage <- set_labels(all_data$stage, 
+                            labels=c("I", "II", "III", "IV"))
+
+all_data$ata_2015 <-set_label(all_data$ata_2015, 
+                                     label="Stage")
+all_data$ata_2015 <- set_labels(all_data$ata_2015, 
+                            labels=c("Low", "Intermediate", "High"))
+
+all_data$ata_2025 <-set_label(all_data$ata_2025, 
+                                     label="Stage")
+all_data$ata_2025 <- set_labels(all_data$ata_2025, 
+                            labels=c("Low", "Low-Intermediate Risk", 
+                                     "High-Intermediate Risk", "High"))
+
+all_data$rai <-set_label(all_data$rai, label="Radioactive Iodine (RAI) therapy")
+all_data$rai <- set_labels(all_data$rai, labels=c("No", "Yes"))
+
+all_data$recurrence <-set_label(all_data$recurrence, label="Recurrence")
+all_data$recurrence <- set_labels(all_data$recurrence, labels=c("No", "Yes"))
+
+all_data$age <-set_label(all_data$age, label="Age")
+all_data$bmi <-set_label(all_data$bmi, label="BMI")
+all_data$tumor_size <-set_label(all_data$tumor_size, label="Tumor size")
+all_data$number_ln_exc <-set_label(all_data$number_ln_exc, 
+                                   label="Number of Lymphnode excision")
+all_data$number_posit_ln <-set_label(all_data$number_posit_ln, 
+                                     label="Number of Positive Lymphnode")
+all_data$ln_ratio <-set_label(all_data$ln_ratio, label="Lymphnode ratio")
+all_data$size_posit_ln <-set_label(all_data$size_posit_ln,
+                                   label="Size of positive lymphnode")
+all_data$raidose <-set_label(all_data$raidose, label="RAI dose")
+all_data$tg_pre_rai <-set_label(all_data$tg_pre_rai, label="Tiroglobuline pre-RAI")
+all_data$follow_months <-set_label(all_data$follow_months, 
+                                   label="Following in months")
+all_data$tsh_follow <-set_label(all_data$tsh_follow, label="TSH at following")
+all_data$tg_follow <-set_label(all_data$tg_follow, label="TG at following")
+
+
+```
+
+```{r runing}
+### 1. Tables
+out <- mytable(group+recurrence~., data = all_data)
+# mycsv(out, file = "summaries.csv")
+out1 <- mytable(all_data)
+# mycsv(mytable(all_data), file = "summaries1.csv")\
+
+# df_l15y <- filter(all_data, follow_months <=180) tb_l15y_stats <-
+# mytable(group+recurrence~., data = df_l15y) # mycsv(out, file =
+# "summariesl15y.csv") tb_l15y <- mytable(df_l15y) mycsv(mytable(df_l15y), file
+# = "summaries_less15years1.csv")
+
+
+### 2. Survival Analysis tables
+df <- all_data %>%
+  select(-Group)
+
+df$TS = with(df, Surv(follow_months, recurrence==1))
+
+# Survival curve
+plot(df$TS, mark.time=c(60,120,180,240,300,360,420), #x in years; y in %
+     xscale=12, xlab = "Time (in years)", ylab = "Free-Recurrence (%)", yscale=100, 
+     pch=7, lty = c(1,4,4), col = c(1,2,2), cex = 0.5, xaxs = "i")
+title("Kaplan Meyer Curve of Free - Recurrence \n Thyroid Cancer")
+
+# Kaplan-Meyer
+#significant variables:
+# age+sex+stage+type_resection+vascular_inv+multicent_bilat+extranod_exten+number_posit_ln+size_posit_ln+ln_ratio+histology+hashimoto+raidose+tg_pre_rai+tg_follow,
+# > 30% NaNs values
+# .-bmi-number_ln_exc-multicent_bilat-vascular_inv-perineural_inv-number_posit_ln-ln_ratio-size_posit_ln-extranod_exten-ata_2015-ata_2025-tg_pre_rai
+# <20% NaNs values < 212.6
+fit <- coxph(TS~sex+age+radiotherapy+family_history+thy_disease_preop+positive_ln+tnm_t+tnm_n+tnm_m+stage+rai+tsh_follow+tg_follow+subtype,data=df)#, subset = follow_months < 120)
+temp <- cox.zph(fit, transform = "km")
+
+
+fit <- survfit(TS~sex, data = df, subset = follow_months <= 180)
+
+ggsurvplot(
+  fit,
+  data = df,
+  risk.table = TRUE,
+  cumevents = TRUE,
+  conf.int = TRUE,
+  pval = TRUE,
+  xlim = c(0, 180),
+  break.time.by = 12,
+  xscale = 12,
+  xlab = "Follow-up time (years)",
+  ylab = "Recurrence-free survival probability"
+)
+```
